@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Seymour!</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/manifest.json">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#2b5797">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <meta name="msapplication-config" content="favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+  </head>
+  <body>
+
+    <!-- 3rd-party stuff -->
+    <!-- <script src="3rdparty/ohm.min.js"></script> -->
+    <script src="3rdparty/jquery-3.2.1.min.js"></script>
+    <script src="3rdparty/codemirror.js"></script>
+    <script src="3rdparty/checked-emitter.js"></script>
+    <script src="3rdparty/underscore.js"></script>
+    <link rel="stylesheet" href="3rdparty/codemirror.css">
+
+    <script src="python-in-ohm/third_party/diff.js/lcs.js"></script>
+    <script src="python-in-ohm/third_party/diff.js/diff.js"></script>
+    <script src="python-in-ohm/SourceLoc.js"></script>
+    <script src="python-in-ohm/node_modules/ohm-js/dist/ohm.js"></script>
+    <script src="python-in-ohm/node_modules/underscore/underscore-min.js"></script>
+    <script src="python-in-ohm/node_modules/lex/lexer.js"></script>
+    <script src="python-in-ohm/utils.js"></script>
+    <script src="python-in-ohm/SourceMap.js"></script>
+    <script src="python-in-ohm/lexer/tokens.js"></script>
+    <script src="python-in-ohm/lexer/TokenStream.js"></script>
+    <script src="python-in-ohm/lexer/index.js"></script>
+    <script src="python-in-ohm/parser/grammar.js"></script>
+    <script src="python-in-ohm/parser/semantics.js"></script>
+    <script src="python-in-ohm/parser/ast.js"></script>
+    <script src="python-in-ohm/parser/instrumented.js"></script>
+    <script src="python-in-ohm/parser/sourceLoc.js"></script>
+    <script src="python-in-ohm/parser/id.js"></script>
+    <script src="python-in-ohm/parser/toAST.js"></script>
+    <script src="python-in-ohm/parser/easyAst.js"></script>
+    <script src="python-in-ohm/parser/toList.js"></script>
+    <script src="python-in-ohm/parser/verify.js"></script>
+    <script src="python-in-ohm/parser/index.js"></script>
+    <script src="python-in-ohm/parser/incremental.js"></script>
+
+    <!-- Language ----------------------------------->
+
+    <!-- the interpreter -->
+    <!-- <script src="lang/activations.js"></script>
+    <script src="lang/asts.js"></script>
+    <script src="lang/builtins.js"></script>
+    <script src="lang/instructions.js"></script>
+    <script src="lang/Interpreter.js"></script>
+    <script src="lang/Method.js"></script>
+    <script src="lang/Obj.js"></script>
+    <script src="lang/BlockClosure.js"></script>
+    <script src="lang/Class.js"></script> -->
+    <!-- <script src="lang/SourceLoc.js"></script> -->
+
+    <!-- syntax stuff -->
+    <!-- <script src="lang/grammar.js"></script>
+    <script src="lang/parse.js"></script> -->
+    <!-- <script src="lang/syntaxHighlight.js"></script>
+    <link rel="stylesheet" href="syntaxHighlight.css"> -->
+
+    <!-- prelude -->
+    <!-- <script src="lang/prelude.js"></script> -->
+
+    <!-- Visualizations------------------------------------------>
+
+    <script src="viz/Env.js"></script>
+    <script src="viz/EventRecorder.js"></script>
+    <script src="viz/MicroVizEvents.js"></script>
+    <script src="viz/macroViz.js"></script>
+    <script src="viz/microViz.js"></script>
+    <script src="viz/events.js"></script>
+    <link rel="stylesheet" href="viz/microViz.css">
+    <link rel="stylesheet" href="viz/macroViz.css">
+
+    <!-- Pulling it all together ---------------------------------------------------------------->
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="highlighting.css">
+    <div id="topHalf">
+      <div id="microVizContainer"></div>
+    </div>
+    <div id="errorDiv"></div>
+    <div id="bottomHalf">
+      <ul id="legend">
+        <li class="focused"><span class="swatch">▣</span> focused</li>
+        <li class="definition"><span class="swatch">▣</span> definition</li>
+        <li class="call"><span class="swatch">▣</span> call</li>
+        <span id="workingIndicator">⬤</span>
+      </ul>
+      <div id="macroVizScroller">
+        <div id="macroVizContainer"></div>
+      </div>
+    </div>
+    <script src="lib.js"></script>
+    <!-- <script src="setup.js"></script> -->
+    <script src="highlighting.js"></script>
+    <script src="pathmatcher.js"></script>
+    <!-- <script src="seymour.js"></script> -->
+    <script src="python.js"></script>
+    <script src="index.js"></script>
+
+  </body>
+</html>

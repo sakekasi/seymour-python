@@ -84,9 +84,7 @@ BinOp.prototype.instrumented = function(state) {
   return new BinOp(this.sourceLoc, this.id, this.left.instrumented(state), this.op, this.right.instrumented(state));
 };
 
-BoolOp.prototype.instrumented = function(state) {
-  return new BoolOp(this.sourceLoc, this.id, this.op, this.values.map(value => value.instrumented(state)));
-};
+// TODO: BoolOp
 
 Compare.prototype.instrumented = function(state) {
   const parent = state.parent;

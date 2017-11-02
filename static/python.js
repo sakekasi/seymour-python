@@ -1,14 +1,3 @@
-// Support TLS-specific URLs, when appropriate.
-let ws_scheme;
-if (window.location.protocol == "https:") {
-  ws_scheme = "wss://";
-} else {
-  ws_scheme = "ws://"
-};
-
-
-const socket = new ReconnectingWebSocket(ws_scheme + location.host + "/run");
-
 const eventArgOrders = {
   ProgramEvent: ['orderNum', 'sourceLoc'],
   SendEvent: ['orderNum', 'sourceLoc', 'envId', 'recv', 'selector', 'args', 'activationPathToken'],
@@ -91,7 +80,7 @@ class Python extends CheckedEmitter {
     
     this.instrumenter = new IncrementalInstrumenter();
 
-    this.socket = socket;
+    this.socket = new WebSocket('ws://localhost:8004');
     this.socket.addEventListener('message', (message) => this.onMessage(message));
     // TODO: guarantee run happens after socket is opened
     this.socket.addEventListener('open', () => this.onOpen());
@@ -147,15 +136,7 @@ class Python extends CheckedEmitter {
       clearTimeout(this.eventProcessingTimeout);
     }
     this.eventProcessingTimeout = setTimeout(()=>this.processSomeMessages(), 1000*SECONDS_PER_PERIOD);
-    console.log(JSON.stringify({
-      type: 'kill'
-    }))
     this.socket.send(JSON.stringify({ type: 'kill' }))
-    console.log(JSON.stringify({
-      type: 'run',
-      code: instrumentedCode,
-      sourceLocs: {}
-    }))
     this.socket.send(JSON.stringify({
       type: 'run',
       code: instrumentedCode,

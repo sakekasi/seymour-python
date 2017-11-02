@@ -1,0 +1,4 @@
+[submodule "static"]
+	path = static
+	url = https://github.com/harc/seymour.git
+	branch = python
