@@ -1,1 +1,1 @@
-web: gunicorn -R -k flask_sockets.worker server:app
+web: gunicorn --capture-output -k flask_sockets.worker server:app -t 600

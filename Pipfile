@@ -11,6 +11,7 @@ gunicorn = "*"
 flask = "*"
 flask-sockets = "*"
 dill = "*"
+gipc = "*"
 
 
 [dev-packages]

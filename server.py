@@ -6,8 +6,8 @@ import os
 import gevent
 from flask import Flask, render_template
 from flask_sockets import Sockets
-from multiprocessing import Queue
-from queue import Empty
+# from multiprocessing import Queue
+# from queue import Empty
 
 from CodeRunner import CodeRunner
 from utils import toJSON
@@ -30,20 +30,23 @@ class CodeRunnerBackend(object):
       for websocket in self.websockets:
         codeRunner = self.codeRunners[websocket]
         try:
-          item = codeRunner.queue.get_nowait()
-          item = dill.loads(item)
-          websocket.send(toJSON(item))
-          if item['type'] == 'done':
-            codeRunner.join()
-            self._clear(websocket)
-        except Empty:
-          pass
+          item = codeRunner.readEnd.get()
+        except EOFError:
+          continue
+        # item = dill.loads(item)
+        # print(codeRunner.process.pid, item)
+        websocket.send(toJSON(item))
+        if item['type'] == 'done':
+          print('DONE')
+          codeRunner.join()
+          self._clear(websocket)
   
   def register(self, websocket, codeRunner):
     self.websockets.append(websocket)
     self.codeRunners[websocket] = codeRunner
   
   def stop(self, websocket):
+    print('STOP')
     try:
       codeRunner = self.codeRunners[websocket]
       self.codeRunners[websocket].terminate()
@@ -73,8 +76,10 @@ def onConnection(websocket):
       continue
     message = json.loads(message)
 
+    print(message['type'])
     if message['type'] == 'run':
       codeRunner = CodeRunner(message['code'], message['sourceLocs'])
+      print('start')
       codeRunner.start()
       codeRunnerBackend.register(websocket, codeRunner)
     
@@ -83,5 +88,7 @@ def onConnection(websocket):
         
     else:
       raise ValueError('unknown message type {}'.format(message['type']))
+  print('WEBSOCKET CLOSED')
+  codeRunnerBackend.stop(websocket)
 
 

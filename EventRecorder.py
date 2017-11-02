@@ -18,9 +18,9 @@ class TerminateException(Exception):
   pass
 
 class EventRecorder(object):
-  def __init__(self, queue):
+  def __init__(self, handle):
     self.currentProgramOrSendEvent = None
-    self.queue = queue
+    self.handle = handle
     self.raised = False
     self.memo = {}
     self.parents = {}
@@ -44,7 +44,8 @@ class EventRecorder(object):
 
   def event(self):
     if self.terminate:
-      self.queue.close()
+      print('PROCESS TERMINATED')
+      self.handle.close()
       raise TerminateException()
     self.numEventsCreated += 1
     self.numEventsCreatedInLastPeriod += 1
@@ -124,7 +125,7 @@ class EventRecorder(object):
         parentEvent.children.append(programOrSendEvent)
       
       self.event()
-      self.queue.put(pickle.dumps(newEnv.toJSONObject()))
+      self.handle.put(newEnv.toJSONObject())
       return newEnv
   
   def receive(self, env, returnValue):
@@ -151,7 +152,7 @@ class EventRecorder(object):
   
   def _emit(self, event):
     self.event()
-    self.queue.put(pickle.dumps(event.toJSONObject()))
+    self.handle.put(event.toJSONObject())
   
   def show(self, orderNum, sourceLoc, env, string, alt):
     pass
@@ -192,4 +193,5 @@ class EventRecorder(object):
     return newInstance
   
   def done(self):
-    self.queue.put(pickle.dumps({'type': 'done'}))
+    print({'type': 'done'})
+    self.handle.put({'type': 'done'})
