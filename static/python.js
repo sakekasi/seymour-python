@@ -1,3 +1,13 @@
+// Support TLS-specific URLs, when appropriate.
+if (window.location.protocol == "https:") {
+  var ws_scheme = "wss://";
+} else {
+  var ws_scheme = "ws://"
+};
+
+
+var run = new ReconnectingWebSocket(ws_scheme + location.host + "/run");
+
 const eventArgOrders = {
   ProgramEvent: ['orderNum', 'sourceLoc'],
   SendEvent: ['orderNum', 'sourceLoc', 'envId', 'recv', 'selector', 'args', 'activationPathToken'],
@@ -80,7 +90,7 @@ class Python extends CheckedEmitter {
     
     this.instrumenter = new IncrementalInstrumenter();
 
-    this.socket = new WebSocket('ws://localhost:8004');
+    this.socket = run;
     this.socket.addEventListener('message', (message) => this.onMessage(message));
     // TODO: guarantee run happens after socket is opened
     this.socket.addEventListener('open', () => this.onOpen());
