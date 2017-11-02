@@ -1,7 +1,7 @@
 from multiprocessing import Queue, Process
 import signal
 
-from EventRecorder import EventRecorder
+from EventRecorder import EventRecorder, TerminateException
 
 class CodeRunner(object):
   def __init__(self, code, sourceLocs):
