@@ -22,7 +22,7 @@ class Event {
       return '∞';
     } else if (v === -Infinity) {
       return '-∞';
-    } else if (v.type === 'callable') {
+    } else if (v !== null && v.type === 'callable') {
       return '{callable}';
     } else if (v !== null && v.hasOwnProperty('id')) {
       return v.id < Event.objectIdEmojis.length ? Event.objectIdEmojis[v.id] : '#' + v.id;
