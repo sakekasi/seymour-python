@@ -4,6 +4,8 @@ import json
 import dill
 import os
 import gevent
+import logging
+import sys
 from flask import Flask, render_template
 from flask_sockets import Sockets
 # from multiprocessing import Queue
@@ -13,7 +15,9 @@ from CodeRunner import CodeRunner
 from utils import toJSON
 
 app = Flask(__name__)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.debug = 'DEBUG' in os.environ
+app.logger.setLevel(logging.DEBUG if app.debug else logging.INFO)
 sockets = Sockets(app)
 
 class CodeRunnerBackend(object):
@@ -33,11 +37,9 @@ class CodeRunnerBackend(object):
           item = codeRunner.readEnd.get()
         except EOFError:
           continue
-        # item = dill.loads(item)
-        # print(codeRunner.process.pid, item)
         websocket.send(toJSON(item))
         if item['type'] == 'done':
-          print('DONE')
+          app.logger.debug('JOINING CODERUNNER')
           codeRunner.join()
           self._clear(websocket)
   
@@ -46,7 +48,6 @@ class CodeRunnerBackend(object):
     self.codeRunners[websocket] = codeRunner
   
   def stop(self, websocket):
-    print('STOP')
     try:
       codeRunner = self.codeRunners[websocket]
       self.codeRunners[websocket].terminate()
@@ -69,6 +70,7 @@ def index():
 @sockets.route('/run')
 def onConnection(websocket):
   codeRunner = None
+  app.logger.info('NEW WEBSOCKET CONNECTION')
   while not websocket.closed:
     gevent.sleep()
     message = websocket.receive()
@@ -76,19 +78,22 @@ def onConnection(websocket):
       continue
     message = json.loads(message)
 
-    print(message['type'])
+    app.logger.info('WEBSOCKET MESSAGE %s', message['type'])
     if message['type'] == 'run':
       codeRunner = CodeRunner(message['code'], message['sourceLocs'])
-      print('start')
+      app.logger.debug('STARTING CODERUNNER')
       codeRunner.start()
       codeRunnerBackend.register(websocket, codeRunner)
+      app.logger.debug('STARTED CODERUNNER')
     
     elif message['type'] == 'kill':
+      app.logger.debug('STOPPING CODERUNNER')
       codeRunnerBackend.stop(websocket)
+      app.logger.debug('STOPPED CODERUNNER')
         
     else:
       raise ValueError('unknown message type {}'.format(message['type']))
-  print('WEBSOCKET CLOSED')
+  app.logger.info('WEBSOCKET CONNECTION CLOSED')
   codeRunnerBackend.stop(websocket)
 
 

@@ -27,9 +27,7 @@ class CodeRunner(object):
     try:
       g['runCode']()
     except TerminateException as te:
-      print('CAUGHT TERMINATEEXCEPTION')
       sys.exit(1)
-      print('EXITED')
       pass
     except Exception as e:
       if not R.raised:
@@ -41,7 +39,6 @@ class CodeRunner(object):
         )
   
   def _exit_gracefully(self, arg1, arg2):
-    print('GRACEFUL EXIT')
     self.R.terminate = True
     sys.exit(1)
 
@@ -54,7 +51,6 @@ class CodeRunner(object):
     self.process.terminate()
   
   def join(self):
-    print("JOINING")
     self.process.join()
     self.readEnd.close()
     try:
