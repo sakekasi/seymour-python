@@ -16,6 +16,8 @@ class Event {
   _valueString(v) {
     if (typeof v === 'function') {
       return '{function}';
+    } else if (v.type === 'callable') {
+      return '{callable}';
     } else if (v === undefined) {
       return 'undefined';
     } else if (v === Infinity) {

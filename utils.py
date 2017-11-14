@@ -4,7 +4,7 @@ import math
 class NetworkEncoder(json.JSONEncoder):
   def default(self, o):
     if callable(o):
-      return '{callable}'
+      return {'type': 'callable'}
     elif o == None:
       return 'None'
     elif o == math.inf:
@@ -15,7 +15,7 @@ class NetworkEncoder(json.JSONEncoder):
       try:
         return json.JSONEncoder.default(self, o)
       except TypeError:
-        return '#' + str(id(o)) # TODO: may wanna add object id emojis
+        return {'type': 'object', 'id': str(id(o))} # TODO: may wanna add object id emojis
 
 def toJSON(jsonObject):
   return NetworkEncoder().encode(jsonObject)
