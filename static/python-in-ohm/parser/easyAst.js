@@ -38,6 +38,13 @@ function for_(target, iter, body, orelse = null, sourceLoc = null, id = null) {
   return new For(sourceLoc, id, target, iter, body, orelse);
 }
 
+function if_(tests, bodies, orelse = null, sourceLoc = null, id = null) {
+  console.assert(bodies instanceof Array && bodies.every(body => body instanceof Array));
+  console.assert(orelse === null || orelse instanceof Array);
+
+  return new If(sourceLoc, id, tests, bodies, orelse);
+}
+
 function while_(test, body, orelse = null, sourceLoc = null, id = null) {
   console.assert(test instanceof Expr);
   console.assert(body instanceof Array);
@@ -164,4 +171,12 @@ function clsDef(name, bases, keywords, body, decoratorList = [], sourceLoc = nul
 
 function plus(a, b, sourceLoc = null, id = null) {
   return new BinOp(sourceLoc, id, a, '+', b);
+}
+
+function and(values, sourceLoc = null, id = null) {
+  return new BoolOp(sourceLoc, id, '&&', values);
+}
+
+function lambda(args, body, sourceLoc = null, id = null) {
+  return new Lambda(sourceLoc, id, args, body)
 }

@@ -170,11 +170,43 @@ Slice.prototype.instrumented = function(state) {
 // Comprehensions
 // ------------
 
+// listcomps are way more complex than expected. table for now
+// to do this properly, need to be able to assign variables in an expression
+// basically, memoize variables and do everything in terms of them
+
 // TODO: ListComp
+// ListComp.prototype.instrumented = function(state) {
+//   // process each comp from the outside in
+//   // at the very inside, use elt
+//   let ans = null;¡
+//   let currentIncompleteExpression = null;
+//   this.generators.forEach(forClause => {
+//     let previousIncompleteExpression = currentIncompleteExpression;
+//     currentIncompleteExpression = call(id('flatten'), [
+//       call(id('map'), [
+//         lambda()
+//       ], [])
+//     ], [])
+//   });
+//   const ans = call(id('flatten'), [call(id('map'), [
+//   ], [])], [])
+//   ans.push(exprS(call(dot(id('R'), 'memoize'), [str(this.id + '_')])))
+// };
+
 // TODO: SetComp
 // TODO: DictComp
 // TODO: GeneratorExp
 // TODO: Comprehension
+// Comprehension.prototype.instrumented = function(state) {
+//   // for target in iter:
+//   //   if (and of all ifs):
+//   //     state.body
+//   const ans = for_(this.target, this.iter, 
+//     [ this.ifs.length > 0 ? 
+//         if_([and(this.tests.map(test => test.instrumented(state)))], [[state.comprehensionBody()]]) : 
+//         state.comprehensionBody() ]);
+//   return ans;
+// };
 
 // Statements
 // ---------
