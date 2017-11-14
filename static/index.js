@@ -17,7 +17,7 @@ const S = new Python(microVizContainer, macroVizContainer);
 
 S.addListener('codeChanged', code => {
   clearError();
-  localStorage.setItem('seymour-program', S.editor.getValue());
+  localStorage.setItem('seymour-python-program', S.editor.getValue());
 });
 
 S.addListener('run', (_, __) => toggleRunning(true));
@@ -92,13 +92,7 @@ function fixHeights() {
 
 
 
-const sampleProgram = `"hello world".println();
-
-(3 + 4).println();
-
-var sum = 0;
-for 1 to: 10 do: {x |
-  sum = sum + x;
-};
-sum.println();`;
-S.editor.setValue(localStorage.getItem('seymour-program') || sampleProgram);
+const sampleProgram = `sum = 0
+for i in range(5):
+  sum += i`;
+S.editor.setValue(localStorage.getItem('seymour-python-program') || sampleProgram);
