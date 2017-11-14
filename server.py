@@ -12,7 +12,6 @@ from flask_sockets import Sockets
 # from queue import Empty
 
 from CodeRunner import CodeRunner
-from utils import toJSON
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -37,7 +36,7 @@ class CodeRunnerBackend(object):
           item = codeRunner.readEnd.get()
         except EOFError:
           continue
-        websocket.send(toJSON(item))
+        websocket.send(json.dumps(item))
         if item['type'] == 'done':
           app.logger.debug('JOINING CODERUNNER')
           codeRunner.join()

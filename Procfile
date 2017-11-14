@@ -1,1 +1,1 @@
-web: gunicorn --log-level info -k flask_sockets.worker server:app -t 600
+web: gunicorn --capture-output --log-level info -k flask_sockets.worker server:app -t 600

@@ -294,7 +294,7 @@ class Python extends CheckedEmitter {
       } else if (key === 'sourceLoc') {
         args.push(makeSourceLoc(eventJSON.sourceLoc))
       } else if (key === 'returnValue') {
-        args.push(JSON.parse(eventJSON.returnValue));
+        args.push(eventJSON.returnValue);
       } else {
         args.push(eventJSON[key]);
       }

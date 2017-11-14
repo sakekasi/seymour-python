@@ -43,8 +43,6 @@ class CodeRunner(object):
     sys.exit(1)
 
   def start(self):
-    # self.childEnd.put('test')
-    # print('AFTERTEST')
     self.process = gipc.start_process(target=self.run_program, args=(self.writeEnd,), daemon=True)
   
   def terminate(self):

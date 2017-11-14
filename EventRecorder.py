@@ -3,7 +3,6 @@ import time
 
 from events import *
 from Env import Env, Scope
-from utils import toJSON
 import pickle
 from datetime import datetime
 import time
@@ -44,7 +43,6 @@ class EventRecorder(object):
 
   def event(self):
     if self.terminate:
-      print('PROCESS TERMINATED')
       self.handle.close()
       raise TerminateException()
     self.numEventsCreated += 1
@@ -193,5 +191,4 @@ class EventRecorder(object):
     return newInstance
   
   def done(self):
-    print({'type': 'done'})
     self.handle.put({'type': 'done'})

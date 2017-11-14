@@ -24,6 +24,12 @@ class Event {
       return '-∞';
     } else if (v !== null && v.type === 'callable') {
       return '{callable}';
+    } else if (v !== null && v.type === 'False') {
+      return 'False';
+    } else if (v !== null && v.type === 'True') {
+      return 'True';
+    } else if (v !== null && v.type === 'None') {
+      return 'None';
     } else if (v !== null && v.hasOwnProperty('id')) {
       return v.id < Event.objectIdEmojis.length ? Event.objectIdEmojis[v.id] : '#' + v.id;
     } else {

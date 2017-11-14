@@ -3,7 +3,7 @@
 
 import json
 
-from utils import toJSON, toNetworkObject, toNetworkString
+from utils import toNetworkObject, toNetworkString
 
 class Event(object):
   nextEventId = 0
@@ -173,5 +173,5 @@ class ReceiveEvent(Event):
   
   def toJSONObject(self):
     dict = super(ReceiveEvent, self).toJSONObject()
-    dict['returnValue'] = toJSON(self.returnValue)
+    dict['returnValue'] = toNetworkObject(self.returnValue)
     return dict
