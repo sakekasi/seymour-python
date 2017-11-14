@@ -58,6 +58,10 @@ Tuple.prototype.instrumented = function(state) {
   return new Tuple(this.sourceLoc, this.id, this.elts.map(elt => elt.instrumented(state)), this.ctx);
 };
 
+// TODO: Dict
+Ellipsis.prototype.instrumented = function(state) { return this; };
+NameConstant.prototype.instrumented = function(state) { return this; };
+
 // Variables
 // --------
 

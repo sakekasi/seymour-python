@@ -106,7 +106,7 @@ class ReturnEvent(Event):
   
   def toJSONObject(self):
     dict = super(ReturnEvent, self).toJSONObject()
-    dict['value'] = self.value
+    dict['value'] = toNetworkObject(self.value)
     return dict
 
 class LocalReturnEvent(ReturnEvent):
