@@ -269,6 +269,7 @@ class Python extends CheckedEmitter {
 
   onOpen() {
     this.opened = true;
+    this.run(this.instrumenter.code, this.instrumenter.instrument());
   }
 
   fixupEnv(envJSON) {
