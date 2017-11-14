@@ -77,7 +77,7 @@ class SendEvent extends Event {
   }
 
   isInlineBlockCall() {
-    const isBlockCall = this.recv instanceof BlockClosure && this.selector === 'call';
+    const isBlockCall = this.selector === 'enterNewScope';
     if (!isBlockCall) return false;
 
     let someParentContains = false;
