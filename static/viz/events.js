@@ -16,14 +16,14 @@ class Event {
   _valueString(v) {
     if (typeof v === 'function') {
       return '{function}';
-    } else if (v.type === 'callable') {
-      return '{callable}';
     } else if (v === undefined) {
       return 'undefined';
     } else if (v === Infinity) {
       return '∞';
     } else if (v === -Infinity) {
       return '-∞';
+    } else if (v.type === 'callable') {
+      return '{callable}';
     } else if (v !== null && v.hasOwnProperty('id')) {
       return v.id < Event.objectIdEmojis.length ? Event.objectIdEmojis[v.id] : '#' + v.id;
     } else {
