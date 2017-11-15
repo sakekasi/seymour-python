@@ -500,7 +500,7 @@ Return.prototype.instrumented = function(state) {
   // return R.localReturn(..., __currentEnv__, value)
   const instrumentedValue = this.value.instrumented(state);
   state.parents.pop();
-  return ret(call(dot(id('R'), 'localReturn'), [
+  return ret(call(dot(id('R'), 'nonLocalReturn'), [
     n(state.nextOrderNum()), this.sourceLoc.toAST(), id('__currentEnv__'),
     instrumentedValue
   ]), this.sourceLoc, this.id);

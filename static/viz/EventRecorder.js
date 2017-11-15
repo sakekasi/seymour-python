@@ -55,8 +55,8 @@ class EventRecorder extends CheckedEmitter {
   }
 
   receive(env, returnValue) {
-    if (env.currentSendEvent != null) {
-      env.currentSendEvent.returnValue = returnValue;
+    if (this.currentProgramOrSendEvent != null) {
+      this.currentProgramOrSendEvent.returnValue = returnValue;
     }
     this.currentProgramOrSendEvent = env.programOrSendEvent;
     return returnValue;

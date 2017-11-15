@@ -131,7 +131,7 @@ class EventRecorder(object):
       newEnv = self._mkHiddenEnv(None)
       self._registerSend(newEnv)
     ## TODO: this should be something other than an event, closer to an RPC, purely for effects
-    event = ReceiveEvent(env, returnValue) 
+    event = ReceiveEvent(env, returnValue, self.currentProgramOrSendEvent.selector) 
     self._emit(event)
 
     try:
@@ -168,7 +168,10 @@ class EventRecorder(object):
     return value
   
   def nonLocalReturn(self, orderNum, sourceLoc, env, value):
-    pass
+    event = NonLocalReturnEvent(orderNum, sourceLoc, env, value)
+    self._emit(event)
+
+    return value
   
   def assignVar(self, orderNum, sourceLoc, env, declEnv, name, value):
     try:

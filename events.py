@@ -116,6 +116,13 @@ class LocalReturnEvent(ReturnEvent):
   def toMicroVizString(self):
     return '→ ' + toNetworkString(self.value)
 
+class NonLocalReturnEvent(ReturnEvent):
+  def __init__(self, orderNum, sourceLoc, env, value):
+    super(NonLocalReturnEvent, self).__init__(orderNum, sourceLoc, env, value)
+
+  def toMicroVizString(self):
+    return 'return ' + toNetworkString(self.value)
+
 class ErrorEvent(Event):
   def __init__(self, sourceLoc, env, errorString):
     super(ErrorEvent, self).__init__(-1, sourceLoc, env)
@@ -167,11 +174,13 @@ class InstantiationEvent(Event):
 ##----- Intended as RPC calls -------
 
 class ReceiveEvent(Event):
-  def __init__(self, env, returnValue):
+  def __init__(self, env, returnValue, selector):
     super(ReceiveEvent, self).__init__(-1, None, env)
     self.returnValue = returnValue
+    self.selector = selector
   
   def toJSONObject(self):
     dict = super(ReceiveEvent, self).toJSONObject()
     dict['returnValue'] = toNetworkObject(self.returnValue)
+    dict['selector'] = toNetworkObject(self.selector)
     return dict

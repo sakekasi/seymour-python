@@ -17,6 +17,7 @@ const eventArgOrders = {
   InstantiationEvent: ['orderNum', 'sourceLoc', 'envId', 'class', 'args', 'newInstance'],
   ReceiveEvent: ['envId', 'returnValue'],
   LocalReturnEvent: ['orderNum', 'sourceLoc', 'envId', 'value'],
+  NonLocalReturnEvent: ['orderNum', 'sourceLoc', 'envId', 'value'],
   ErrorEvent: ['sourceLoc', 'envId', 'errorString']
 };
 const eventMethods = {
@@ -28,6 +29,7 @@ const eventMethods = {
   InstantiationEvent: 'instantiate',
   ReceiveEvent: 'receive',
   LocalReturnEvent: 'localReturn',
+  NonLocalReturnEvent: 'nonLocalReturn',
   ErrorEvent: 'error'
 };
 const typeToClass = {
