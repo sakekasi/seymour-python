@@ -4,11 +4,11 @@ import math
 def toNetworkObject(o):
   if callable(o):
     return {'type': 'callable'}
-  elif o == None:
+  elif o == None :
     return {'type': 'None'}
-  elif o == True:
+  elif o == True and type(o) == bool:
     return {'type': 'True'}
-  elif o == False:
+  elif o == False and type(o) == bool:
     return {'type': 'False'}
   elif o == math.inf:
     return '∞'
