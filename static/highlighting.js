@@ -82,7 +82,7 @@ class Highlighting {
     }
 
     this.macroViz.addListener('click', (__, event, _) => {
-      if (!event.isInlineBlockCall() && event.activationEnv.sourceLoc !== null) {
+      if (event.activationEnv.sourceLoc !== null) { // !event.isInlineBlockCall() && 
         this.focusLexicalStack(event);
       }
     });
