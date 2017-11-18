@@ -112,6 +112,9 @@ class Highlighting {
       if (DOMEvent.getModifierState('Meta') &&
           event instanceof SendEvent &&
           !view.isImplementation) {
+        this.codeClearDef();
+        this.codeClearRef();
+        this.codeClearResultWidget();
         this.focusLexicalStack(event);
       }
     });
