@@ -41,6 +41,7 @@ class ProgramEvent(Event):
     self.selector = 'program'
     self.activated = False
     self.recv = None
+    self.func = None
     self.args = []
   
   def toMicroVizString(self):
@@ -81,9 +82,10 @@ class VarAssignmentEvent(Event):
     return dict
 
 class SendEvent(Event):
-  def __init__(self, orderNum, sourceLoc, env, recv, selector, args, activationPathToken):
+  def __init__(self, orderNum, sourceLoc, env, recv, func, selector, args, activationPathToken):
     super(SendEvent, self).__init__(orderNum, sourceLoc, env)
     self.recv = recv
+    self.func = func
     self.selector = selector
     self.args = args
     self.activationPathToken = activationPathToken

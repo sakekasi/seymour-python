@@ -67,28 +67,34 @@ class EventRecorder(object):
     return env
 
   ## TODO: deal with activationPathToken
-  def send(self, orderNum, sourceLoc, env, recv, selector, args, activationPathToken):
-    event = SendEvent(orderNum, sourceLoc, env, recv, selector, args, activationPathToken)
+  def send(self, orderNum, sourceLoc, env, recv, func, selector, args, activationPathToken):
+    event = SendEvent(orderNum, sourceLoc, env, recv, func, selector, args, activationPathToken)
     self._emit(event)
 
     env.currentSendEvent = event ## TODO: these effects must be replicated on both sides
     self.currentProgramOrSendEvent = event
   
-  def _hiddenSend(self, env, selector):
-    self.send(-1, None, env, None, selector, [], None) # TODO: this is wrong, should have more info
+  def _hiddenSend(self, env, func, selector):
+    self.send(-1, None, env, None, func, selector, [], None) # TODO: this is wrong, should have more info
 
   def _mkHiddenEnv(self, parentEnv):
     programOrSendEvent = self.currentProgramOrSendEvent
     newEnv = Env(None, parentEnv, programOrSendEvent.env, programOrSendEvent)
     return self._registerSend(newEnv)
 
-  def mkEnv(self, newEnvSourceLoc, parentEnv, recv, selector, args, scope=False):
+  def mkEnv(self, newEnvSourceLoc, parentEnv, func, selector, args, scope=False):
     if scope:
       envClass = Scope
     else:
       envClass = Env
+
     programOrSendEvent = self.currentProgramOrSendEvent
-    same = (recv is programOrSendEvent.recv) and (selector is programOrSendEvent.selector)
+    if programOrSendEvent.recv != None:
+      eventArgs = [programOrSendEvent.recv] + programOrSendEvent.args
+    else:
+      eventArgs = programOrSendEvent.args
+
+    same = (func is programOrSendEvent.func)
     for idx, arg in enumerate(args):
       same = same and (arg is programOrSendEvent.args[idx])
     
@@ -97,11 +103,11 @@ class EventRecorder(object):
         callerEnv = programOrSendEvent.env
       else:
         callerEnv = self._mkHiddenEnv(parentEnv)
-        self._hiddenSend(callerEnv, selector)
+        self._hiddenSend(callerEnv, func, selector) 
         programOrSendEvent = self.currentProgramOrSendEvent
     else:
       callerEnv = programOrSendEvent.env
-      self._hiddenSend(callerEnv, selector) #TODO, different env
+      self._hiddenSend(callerEnv, func, selector) # TODO, different env
       programOrSendEvent = self.currentProgramOrSendEvent  
 
     newEnv = envClass(newEnvSourceLoc, parentEnv, callerEnv, programOrSendEvent)
@@ -142,7 +148,7 @@ class EventRecorder(object):
     return returnValue
 
   def enterScope(self, orderNum, sourceLoc, env, activationPathToken): ## TODO: make this create a scope not an env
-    self.send(orderNum, sourceLoc, env, None, 'enterNewScope', [], activationPathToken)
+    self.send(orderNum, sourceLoc, env, None, 'enterNewScope', [], activationPathToken) # TODO: func
     return self.mkEnv(sourceLoc, env, None, 'enterNewScope', [],  True)
 
   def leaveScope(self, env):

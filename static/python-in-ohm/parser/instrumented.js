@@ -115,9 +115,11 @@ Call.prototype.instrumented = function(state) {
   // R.memoize(<id>_args, args)
   elts.push(call(dot(id('R'), 'memoize'), [str(this.id + '_args'), 
     list(this.args.map(arg => arg.instrumented(state)))], []));
-  // R.send(orderNum, this.sourceLoc, __currentEnv__, R.retrieve(<id>_func), selector, R.retrieve(<id>_args), this.id)
+  // R.send(orderNum, this.sourceLoc, __currentEnv__, 
+  //   None, R.retrieve(<id>_func), selector, R.retrieve(<id>_args), this.id)
   // TODO: keyword arguments in recorder
   elts.push(call(dot(id('R'), 'send'), [n(state.nextOrderNum()), this.sourceLoc.toAST(), id('__currentEnv__'),
+    none(),
     call(dot(id('R'), 'retrieve'), [str(this.id + '_func')], []), str(selector), 
     call(dot(id('R'), 'retrieve'), [str(this.id + '_args')], []), n(this.id)], []));
   // R.receive(__currentEnv__, R.retrieve(<id>_func)(*R.retrieve(<id>_args)))
