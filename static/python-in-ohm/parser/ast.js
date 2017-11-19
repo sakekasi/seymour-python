@@ -285,6 +285,10 @@ class BoolOp extends Expr {
   get children() {
     return this.values;
   }
+
+  toString() {
+    return '( ' + this.values.map(value => value.toString()).join(' ' + this.op + ' ') + ' )';
+  }
 }
 
 class Compare extends Expr {
