@@ -55,7 +55,9 @@ class IndentationError extends Error {
   constructor(idx, ...params) {
     super(...params);
 
-    Error.captureStackTrace(this, IndentationError);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, IndentationError);
+    }
 
     this.idx = idx;
     this.message = '^\nindentation error'
@@ -66,7 +68,9 @@ class ParensError extends Error {
   constructor(idx, ...params) {
     super(...params);
 
-    Error.captureStackTrace(this, ParensError);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ParensError);
+    }
 
     this.idx = idx;
   }
