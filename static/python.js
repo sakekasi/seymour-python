@@ -62,6 +62,7 @@ class Python extends CheckedEmitter {
         cm.replaceSelection(spaces);
       }
     });
+    this.editor.setOption('mode', 'python');
 
     if (this.macroVizContainer) {
       this.macroViz = new MacroViz(this.macroVizContainer);
