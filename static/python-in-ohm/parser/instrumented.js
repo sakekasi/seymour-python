@@ -81,10 +81,6 @@ UnaryOp.prototype.instrumented = function(state) {
 }
 
 BinOp.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return new BinOp(this.sourceLoc, this.id, this.left.instrumented(state), this.op, this.right.instrumented(state));
 };
 
@@ -428,8 +424,9 @@ While.prototype.instrumented = function(state) {
   return ans;
 }
 
-// TODO: Break
-// TODO: Continue
+Break.prototype.instrumented = function(state) { return this };
+Continue.prototype.instrumented = function(state) { return this };
+
 // TODO: ExceptHandler
 // TODO: WithItem
 

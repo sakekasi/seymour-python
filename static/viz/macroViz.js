@@ -82,7 +82,7 @@ class NodeView {
 
   render() {
     this.children = d('children', {});
-    this.label = d('label', {});
+    this.label = d('label', {}, this.event.selector || 'program');
     this.DOM = d('macroVizNode', {
         isFocusable: !!(this.event.activationEnv && this.event.activationEnv.sourceLoc)
       },

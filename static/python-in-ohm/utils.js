@@ -38,7 +38,9 @@ class ParseError extends Error {
   constructor(idx, expected, ...params) {
     super(...params);
 
-    Error.captureStackTrace(this, ParseError);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, CustomError);
+    }
 
     this.idx = idx;
     this.expected = expected;

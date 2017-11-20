@@ -17,10 +17,10 @@ Python {
     | return ExprList? -- return
     | YieldExpr -- yield
     | ImportStmt
-    | StarredExpr -- expr
-    | raise (Expr (from Expr)?)? -- raise
     | break -- break
     | continue -- continue
+    | StarredExpr -- expr
+    | raise (Expr (from Expr)?)? -- raise
     | global NonemptyListOf<identifier, ","> -- global
     | nonlocal NonemptyListOf<identifier, ","> -- nonlocal
   
@@ -80,7 +80,7 @@ Python {
   StarredList = NonemptyListWithOptionalEndSep<StarredItem, ",">
 
   // TODO: not sure about this
-  StarredExpr = NonemptyListOf<StarredItem, ","> -- star 
+  StarredExpr = (StarredItem ",")* StarredItem? -- star 
     | Expr
 
   StarredItem = "*" OrExpr -- star
@@ -169,7 +169,7 @@ Python {
     | Atom
   
   Atom = 
-    | "(" StarredExpr? ")" -- tuple
+    | "(" StarredExpr? ")" -- paren
     | "[" (Comprehension | StarredList)? "]" -- list
     | "{" (Comprehension | StarredList) "}" -- set
     | "{" (DictComprehension | KeyDatumList)? "}" -- dict

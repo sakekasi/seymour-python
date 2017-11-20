@@ -81,8 +81,17 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
   },
 
   // TODO: SimpleStmt_raise
-  // TODO: SimpleStmt_break
-  // TODO: SimpleStmt_continue
+  SimpleStmt_break(_) {
+    const sourceMap = this.args.sourceMap;
+    const idContext = this.args.idContext;
+    return new Break(this.sourceLoc(sourceMap), this.id(idContext));
+  },
+
+  SimpleStmt_continue(_) {
+    const sourceMap = this.args.sourceMap;
+    const idContext = this.args.idContext;
+    return new Continue(this.sourceLoc(sourceMap), this.id(idContext));
+  },
   // TODO: SimpleStmt_global
   // TODO: SimpleStmt_nonlocal
 
@@ -360,14 +369,19 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
     return [op, right];
   },
 
-  StarredExpr_star(starredItemList) {
+  StarredExpr_star(starredItemCsts, _commas, optStarredItem) {
     const sourceMap = this.args.sourceMap;
     const idContext = this.args.idContext;
-    const maybeStarredItems = starredItemList.asIteration().toAST(sourceMap, idContext);
-    if (maybeStarredItems.length === 1) {
-      return maybeStarredItems[0];
+    const starredItems = starredItemCsts.toAST(sourceMap, idContext);
+    const endStarredItem = optStarredItem.toAST(sourceMap, idContext);
+    const numItems = starredItems.length + endStarredItem.length;
+    
+    if (numItems === 1) {
+      return endStarredItem[0];
+    } else if (numItems > 1) {
+      return new Tuple(this.sourceLoc(sourceMap), this.id(idContext),starredItems.concat(numItems));
     } else {
-      return new Tuple(this.sourceLoc(sourceMap), this.id(idContext), maybeStarredItems);
+      console.assert('0 starred items?!');
     }
   },
 
@@ -514,11 +528,11 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
     }
   },
 
-  Atom_tuple(_oparen, optStarredExpr, _) {
+  Atom_paren(_oparen, optStarredExpr, _) {
     const sourceMap = this.args.sourceMap;
     const idContext = this.args.idContext;
     if (optStarredExpr.numChildren === 1) {
-      return optStarredExpr.toAST(sourceMap, idContext);
+      return optStarredExpr.toAST(sourceMap, idContext)[0];
     } else {
       return new Tuple(this.sourceLoc(sourceMap), _oparen.id(idContext), []);
     }

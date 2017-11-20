@@ -797,11 +797,19 @@ class Break extends Stmt {
   get children() {
     return [];
   }
+
+  toString(indentation = 0) {
+    return spaces(indentation) + 'break\n';
+  }
 }
 
 class Continue extends Stmt {
   get children() {
     return [];
+  }
+
+  toString(indentation = 0) {
+    return spaces(indentation) + 'continue\n';
   }
 }
 
