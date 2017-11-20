@@ -6,6 +6,9 @@ Program.prototype.instrumented = function(state) {
   const parent = state.parent;
   state.parents.push(this);
 
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
+
   state.pushExecutionOrderCounter();
   const stmts = [];
   stmts.push(assign(id('__currentEnv__'), call(dot(id('R'), 'program'), [
@@ -23,7 +26,10 @@ Program.prototype.instrumented = function(state) {
   state.popExecutionOrderCounter();
 
   const defn = def('runCode', null, stmts, [], null, null)
+  
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
+
   return program([defn], this.sourceLoc, this.id);
 };
 
@@ -31,26 +37,14 @@ Program.prototype.instrumented = function(state) {
 // ------
 
 Num.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return this;
 };
 
 Str.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return this;
 }
 
 List.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return new List(this.sourceLoc, this.id, this.elts.map(elt => elt.instrumented(state)));
 };
 
@@ -66,10 +60,6 @@ NameConstant.prototype.instrumented = function(state) { return this; };
 // --------
 
 Name.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return this;
 };
 
@@ -90,10 +80,6 @@ BoolOp.prototype.instrumented = function(state) {
 };
 
 Compare.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return new Compare(this.sourceLoc, this.id, this.left.instrumented(state), this.ops, 
     this.comparators.map(comparator => comparator.instrumented(state)));
 };
@@ -333,7 +319,8 @@ For.prototype.instrumented = function(state) {
   state.parents.push(this);
 
   const ans = [];
-  const prevEnvId = parent.id;
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
 
   // R.memoize(<id>_iter, iter)
   ans.push(exprS(call(dot(id('R'), 'memoize'), [str(`${this.id}_iter`), this.iter.instrumented(state)])));
@@ -373,9 +360,10 @@ For.prototype.instrumented = function(state) {
     this.orelse ? flatten(this.orelse.map(stmt => stmt.instrumented(state))) : null, this.sourceLoc, this.id));
   // R.leaveScope(__currentEnv__)
   ans.push(exprS(call(dot(id('R'), 'leaveScope'), [id('__currentEnv__')], [])));
-  // __currentEnv__ = __env_<prevEnvId>__
+  // __currentEnv__ = __env_<prevEnvId>__ TODO: not true. what if inside an if?
   ans.push(assign([id('__currentEnv__')], id(`__env_${prevEnvId}__`)));
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
   return ans;
 }
 
@@ -384,7 +372,10 @@ While.prototype.instrumented = function(state) {
   state.parents.push(this);
 
   const ans = [];
-  const prevEnvId = parent.id;
+
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
+
   // __currentEnv__ = R.enterScope(..., __currentEnv__, this.id)
   ans.push(assign([id('__currentEnv__')], call(dot(id('R'), 'enterScope'), [
     n(state.nextOrderNum()), this.sourceLoc.toAST(), id('__currentEnv__'), n(this.id)
@@ -420,7 +411,10 @@ While.prototype.instrumented = function(state) {
   ans.push(exprS(call(dot(id('R'), 'leaveScope'), [id('__currentEnv__')], [])));
   // __currentEnv__ = __env_<prevEnvId>__
   ans.push(assign([id('__currentEnv__')], id(`__env_${prevEnvId}__`)));
+
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
+
   return ans;
 }
 
@@ -438,6 +432,9 @@ FunctionDef.prototype.instrumented = function(state) {
   state.parents.push(this);
   const isMethod = parent instanceof ClassDef;
   const fnName = isMethod ? dot(id(parent.name), this.name) : id(this.name);
+
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
 
   state.pushExecutionOrderCounter();
   const body = [];
@@ -457,6 +454,8 @@ FunctionDef.prototype.instrumented = function(state) {
 
   state.popExecutionOrderCounter();
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
+
   return [
     def(this.name, this.args, body, this.decoratorList, this.returns, this.sourceLoc, this.id),
     exprS(call(dot(id('R'), 'parentEnv'), [id(this.name), id('__currentEnv__')]))
@@ -466,11 +465,16 @@ FunctionDef.prototype.instrumented = function(state) {
 Lambda.prototype.instrumented = function(state) {
   const parent = state.parent;
   state.parents.push(this);
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
 
   const lambdaId = state.lambdaId++;
   const fn = def(`__lambda_${lambdaId}__`, this.args, [ret(this.body, this.body.sourceLoc)], [], null, this.sourceLoc, this.id);
+  
   state.lambdas.push(fn);
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
+
   return id(`__lambda_${lambdaId}__`);
 };
 
@@ -518,7 +522,8 @@ ClassDef.prototype.instrumented = function(state) {
 
   const parent = state.parent;
   state.parents.push(this);
-  const prevEnvId = parent.id;
+  const prevEnvId = state.prevEnvId;
+  state.prevEnvId = this.id;
 
   state.pushExecutionOrderCounter();
   const body = [];
@@ -548,6 +553,7 @@ ClassDef.prototype.instrumented = function(state) {
 
   state.popExecutionOrderCounter();
   state.parents.pop();
+  state.prevEnvId = prevEnvId;
 
   const ans = [];
   // __currentEnv__ = R.enterScope(...)
