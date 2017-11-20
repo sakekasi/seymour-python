@@ -5,7 +5,6 @@ if (window.location.protocol == "https:") {
   var ws_scheme = "ws://"
 };
 
-
 var run = new ReconnectingWebSocket(ws_scheme + location.host + "/run");
 
 const eventArgOrders = {
@@ -167,7 +166,7 @@ class Python extends CheckedEmitter {
       clearTimeout(this.changesTimeout);
     }
 
-    try {
+    // try {
       const instrumentedCode = this.instrumenter.instrument();
       console.log(this.instrumenter.code);
       console.log(instrumentedCode);
@@ -175,27 +174,27 @@ class Python extends CheckedEmitter {
         this.run(this.instrumenter.code, instrumentedCode);
         this.changesTimeout = null;
       }, 200);
-    } catch (parseError) {
-      if (!(parseError instanceof ParseError)) {
-        console.error(parseError);
-        console.error('show this in the codemirror');
-      } else {
-        const pos = this.editor.doc.posFromIndex(parseError.idx);
-        const error = document.createElement('parseError');
-        error.innerText = spaces(pos.ch) + parseError.message;
-        this.parseErrorWidget = this.editor.addLineWidget(pos.line, error);
-        this.changesTimeout = setTimeout(() => {
-          $(error).slideDown().queue(() => {
-            if (this.parseErrorWidget) {
-              this.parseErrorWidget.changed();
-            }
-          });
-          this.changesTimeout = null;
-        }, 2000);
-        $(error).hide();
-        this.parseErrorWidget.changed();
-      }
-    }
+    // } catch (parseError) {
+    //   if (!(parseError instanceof ParseError)) {
+    //     console.error(parseError);
+    //     console.error('show this in the codemirror');
+    //   } else {
+    //     const pos = this.editor.doc.posFromIndex(parseError.idx);
+    //     const error = document.createElement('parseError');
+    //     error.innerText = spaces(pos.ch) + parseError.message;
+    //     this.parseErrorWidget = this.editor.addLineWidget(pos.line, error);
+    //     this.changesTimeout = setTimeout(() => {
+    //       $(error).slideDown().queue(() => {
+    //         if (this.parseErrorWidget) {
+    //           this.parseErrorWidget.changed();
+    //         }
+    //       });
+    //       this.changesTimeout = null;
+    //     }, 2000);
+    //     $(error).hide();
+    //     this.parseErrorWidget.changed();
+    //   }
+    // }
   }
 
   processChange(changeObj) {

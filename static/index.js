@@ -91,8 +91,20 @@ function fixHeights() {
 }
 
 
+const gist_id = getParameterByName('id');
+console.log('GIST ID', gist_id);
 
 const sampleProgram = `sum = 0
 for i in range(5):
   sum += i`;
-S.editor.setValue(localStorage.getItem('seymour-python-program') || sampleProgram);
+
+if (gist_id !== null) {
+  fetchGist(gist_id).done((data) => {
+    const content = (data.files['main.py'] && data.files['main.py'].content) || sampleProgram;
+    S.editor.setValue(content);
+  }).fail(() => {
+    S.editor.setValue(localStorage.getItem('seymour-python-program') || sampleProgram);
+  });
+} else {
+  S.editor.setValue(localStorage.getItem('seymour-python-program') || sampleProgram);
+}
