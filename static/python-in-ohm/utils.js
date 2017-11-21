@@ -1,8 +1,8 @@
-function flatten(arrs) {
+export function flatten(arrs) {
   return [].concat.apply([], arrs);
 }
 
-function range(from, to, step = 1) {
+export function range(from, to, step = 1) {
   const ans = [];
   for (let x = from; x <= to; x+=step) {
     ans.push(x);
@@ -10,21 +10,21 @@ function range(from, to, step = 1) {
   return ans;
 }
 
-function last(arr) {
+export function last(arr) {
   return arr[arr.length - 1];
 }
 
-function repeat(str, n) {
+export function repeat(str, n) {
   let ans = '';
   range(1, n).forEach(() => ans += str);
   return ans;
 }
 
-function spaces(n) {
+export function spaces(n) {
   return repeat(' ', n);
 }
 
-function trimRight(str) {
+export function trimRight(str) {
 	var tail = str.length;
 
 	while (/[\s\uFEFF\u00A0]/.test(str[tail - 1])) {
@@ -34,7 +34,7 @@ function trimRight(str) {
 	return str.slice(0, tail);
 }
 
-class ParseError extends Error {
+export class ParseError extends Error {
   constructor(idx, expected, ...params) {
     super(...params);
 
@@ -51,7 +51,7 @@ class ParseError extends Error {
   }
 }
 
-class IndentationError extends Error {
+export class IndentationError extends Error {
   constructor(idx, ...params) {
     super(...params);
 
@@ -64,7 +64,7 @@ class IndentationError extends Error {
   }
 }
 
-class ParensError extends Error {
+export class ParensError extends Error {
   constructor(idx, ...params) {
     super(...params);
 

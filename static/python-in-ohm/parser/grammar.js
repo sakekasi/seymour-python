@@ -1,3 +1,5 @@
+import ohm from "ohm-js";
+
 const pythonGrammar = ohm.grammar(`
 Python {
   Program = (newline | Stmt)* end
@@ -367,4 +369,5 @@ Python {
 }
 `);
 
-window.grammar = pythonGrammar;
+export default pythonGrammar;
+// window.grammar = pythonGrammar;

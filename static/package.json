@@ -1,0 +1,28 @@
+{
+  "name": "static",
+  "version": "1.0.0",
+  "description": "This is a HTML5 application, built with [Brunch](http://brunch.io).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^14.5.0",
+    "postcss": "^6.0.14",
+    "postcss-cssnext": "^3.0.2"
+  },
+  "dependencies": {
+    "checked-emitter": "^1.1.0",
+    "codemirror": "^5.31.0",
+    "jquery": "^3.2.1",
+    "lex": "^1.7.9",
+    "ohm-js": "^0.14.0",
+    "reconnectingwebsocket": "^1.0.0",
+    "underscore": "^1.8.3"
+  }
+}

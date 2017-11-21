@@ -1,4 +1,10 @@
-class TokenStream {
+// TODO: import diff.js
+
+import {range} from "../utils";
+import SourceMap from "../SourceMap";
+import {NewLine} from "./tokens";
+
+export default class TokenStream {
   constructor(input, lexer) {
     this.tokens = [];
     this.input = input;

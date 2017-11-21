@@ -1,3 +1,6 @@
+import semantics from "./semantics";
+import SourceLoc from "../SourceLoc";
+
 semantics.addOperation('sourceLoc(sourceMap)', {
   _nonterminal(children) {
     const sourceMap = this.args.sourceMap;

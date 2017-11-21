@@ -25,7 +25,7 @@ class PathMatcher {
   }
 }
 
-function getPathMatchers(activationEnv) {
+export default function getPathMatchers(activationEnv) {
   const pathMatchers = [];
   let env = activationEnv;
   while (env) {

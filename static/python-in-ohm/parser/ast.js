@@ -1,5 +1,7 @@
 
-class AST {
+import {spaces} from "../utils";
+
+export class AST {
   constructor(sourceLoc, id) {
     if (id === null) {
       this.id = AST.id--;
@@ -19,7 +21,7 @@ class AST {
 }
 AST.id = -1;
 
-class Program extends AST {
+export class Program extends AST {
   constructor(sourceLoc, id, body) {
     super(sourceLoc, id);
     this.body = body;
@@ -38,11 +40,11 @@ class Program extends AST {
 
 // Literal
 // --------
-class Expr extends AST {}
+export class Expr extends AST {}
 
-class Literal extends Expr {}
+export class Literal extends Expr {}
 
-class Num extends Literal {
+export class Num extends Literal {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -57,7 +59,7 @@ class Num extends Literal {
   }
 }
 
-class Str extends Literal {
+export class Str extends Literal {
   constructor(sourceLoc, id, type, value) {
     super(sourceLoc, id);
     this.type = type;
@@ -73,7 +75,7 @@ class Str extends Literal {
   }
 }
 
-class FormattedValue extends Literal {
+export class FormattedValue extends Literal {
   constructor(sourceLoc, id, value, conversion, formatSpec) {
     super(sourceLoc, id);
     this.value = value;
@@ -86,7 +88,7 @@ class FormattedValue extends Literal {
   }
 }
 
-class JoinedStr extends Literal {
+export class JoinedStr extends Literal {
   constructor(sourceLoc, id, values) {
     super(sourceLoc, id);
     this.values = values;
@@ -97,7 +99,7 @@ class JoinedStr extends Literal {
   }
 }
 
-class Bytes extends Literal {
+export class Bytes extends Literal {
   constructor(sourceLoc, id, bytes) {
     super(sourceLoc, id);
     this.bytes = bytes;
@@ -108,7 +110,7 @@ class Bytes extends Literal {
   }
 }
 
-class List extends Literal {
+export class List extends Literal {
   constructor(sourceLoc, id, elts, ctx=(new Load())) {
     super(sourceLoc, id);
     this.elts = elts;
@@ -124,7 +126,7 @@ class List extends Literal {
   }
 }
 
-class Tuple extends Literal {
+export class Tuple extends Literal {
   constructor(sourceLoc, id, elts, ctx=(new Load())) {
     super(sourceLoc, id);
     this.elts = elts;
@@ -140,7 +142,7 @@ class Tuple extends Literal {
   }
 }
 
-class SetAST extends Literal {
+export class SetAST extends Literal {
   constructor(sourceLoc, id, elts) {
     super(sourceLoc, id);
     this.elts = elts;
@@ -151,7 +153,7 @@ class SetAST extends Literal {
   }
 }
 
-class Dict extends Literal {
+export class Dict extends Literal {
   constructor(sourceLoc, id, keys, values) {
     super(sourceLoc, id);
     console.assert(keys.length === values.length);
@@ -174,7 +176,7 @@ class Dict extends Literal {
   }
 }
 
-class Ellipsis extends Literal {
+export class Ellipsis extends Literal {
   toString() {
     return '...';
   }
@@ -184,7 +186,7 @@ class Ellipsis extends Literal {
   }
 }
 
-class NameConstant extends Literal {
+export class NameConstant extends Literal {
   constructor(sourceLoc, id, type) {
     super(sourceLoc, id);
     this.type = type;
@@ -202,12 +204,12 @@ class NameConstant extends Literal {
 // Variables
 // --------------
 
-class Context {}
-class Load extends Context {}
-class Store extends Context {}
-class Del extends Context {}
+export class Context {}
+export class Load extends Context {}
+export class Store extends Context {}
+export class Del extends Context {}
 
-class Name extends Expr {
+export class Name extends Expr {
   constructor(sourceLoc, id, ident, ctx=(new Load())) {
     super(sourceLoc, id);
     this.ident = ident;
@@ -223,7 +225,7 @@ class Name extends Expr {
   }
 }
 
-class Starred extends Expr {
+export class Starred extends Expr {
   constructor(sourceLoc, id, value, ctx=(new Load())) {
     super(sourceLoc, id);
     this.value = value;
@@ -242,7 +244,7 @@ class Starred extends Expr {
 // Expressions
 // ---------
 
-class UnaryOp extends Expr {
+export class UnaryOp extends Expr {
   constructor(sourceLoc, id, op, expr) {
     super(sourceLoc, id);
     this.op = op;
@@ -258,7 +260,7 @@ class UnaryOp extends Expr {
   }
 }
 
-class BinOp extends Expr {
+export class BinOp extends Expr {
   constructor(sourceLoc, id, left, op, right) {
     super(sourceLoc, id);
     this.op = op;
@@ -275,7 +277,7 @@ class BinOp extends Expr {
   }
 }
 
-class BoolOp extends Expr {
+export class BoolOp extends Expr {
   constructor(sourceLoc, id, op, values) {
     super(sourceLoc, id);
     this.op = op;
@@ -291,7 +293,7 @@ class BoolOp extends Expr {
   }
 }
 
-class Compare extends Expr {
+export class Compare extends Expr {
   constructor(sourceLoc, id, left, ops, comparators) {
     super(sourceLoc, id);
     this.left = left;
@@ -314,7 +316,7 @@ class Compare extends Expr {
   }
 }
 
-class Call extends Expr {
+export class Call extends Expr {
   constructor(sourceLoc, id, /*Expr*/ func, /*Expr**/ args, /*Keyword**/ keywords) {
     super(sourceLoc, id);
     this.func = func;
@@ -338,7 +340,7 @@ class Call extends Expr {
   }
 }
 
-class Keyword extends AST {
+export class Keyword extends AST {
   constructor(sourceLoc, id, arg, value) {
     super(sourceLoc, id);
     this.arg = arg;
@@ -358,7 +360,7 @@ class Keyword extends AST {
   }
 }
 
-class IfExp extends Expr {
+export class IfExp extends Expr {
   constructor(sourceLoc, id, test, body, orelse) {
     super(sourceLoc, id);
     this.test = test;
@@ -375,7 +377,7 @@ class IfExp extends Expr {
   }
 }
 
-class Attribute extends Expr {
+export class Attribute extends Expr {
   constructor(sourceLoc, id, value, attr, ctx=(new Load())) {
     super(sourceLoc, id);
     this.value = value;
@@ -395,7 +397,7 @@ class Attribute extends Expr {
 // Subscripting
 // ---------------
 
-class Subscript extends Expr {
+export class Subscript extends Expr {
   constructor(sourceLoc, id, value, slice, ctx=(new Load())) {
     super(sourceLoc, id);
     this.value = value;
@@ -413,7 +415,7 @@ class Subscript extends Expr {
   }
 }
 
-class Index extends AST {
+export class Index extends AST {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -428,7 +430,7 @@ class Index extends AST {
   }
 }
 
-class Slice extends AST {
+export class Slice extends AST {
   constructor(sourceLoc, id, lower, upper, step) {
     super(sourceLoc, id);
     this.lower = lower;
@@ -457,7 +459,7 @@ class Slice extends AST {
   }
 }
 
-class ExtSlice extends AST {
+export class ExtSlice extends AST {
   constructor(sourceLoc, id, dims) {
     super(sourceLoc, id);
     this.dims = dims;
@@ -471,7 +473,7 @@ class ExtSlice extends AST {
 // Comprehensions
 // -----------
 
-class ListComp extends Expr {
+export class ListComp extends Expr {
   constructor(sourceLoc, id, elt, generators) {
     super(sourceLoc, id);
     this.elt = elt;
@@ -483,7 +485,7 @@ class ListComp extends Expr {
   }
 }
 
-class SetComp extends Expr {
+export class SetComp extends Expr {
   constructor(sourceLoc, id, elt, generators) {
     super(sourceLoc, id);
     this.elt = elt;
@@ -495,7 +497,7 @@ class SetComp extends Expr {
   }
 }
 
-class DictComp extends Expr {
+export class DictComp extends Expr {
   constructor(sourceLoc, id, elt, generators) {
     super(sourceLoc, id);
     this.elt = elt;
@@ -507,7 +509,7 @@ class DictComp extends Expr {
   }
 }
 
-class GeneratorExp extends Expr {
+export class GeneratorExp extends Expr {
   constructor(sourceLoc, id, key, value, generators) {
     super(sourceLoc, id);
     this.key = key;
@@ -520,7 +522,7 @@ class GeneratorExp extends Expr {
   }
 }
 
-class Comprehension extends AST {
+export class Comprehension extends AST {
   constructor(sourceLoc, id, target, iter, ifs, isAsync) {
     super(sourceLoc, id);
     this.target = target;
@@ -537,13 +539,13 @@ class Comprehension extends AST {
 // Statements
 // ---------
 
-class Stmt extends AST {
+export class Stmt extends AST {
   constructor(sourceLoc, id) {
     super(sourceLoc && sourceLoc.trimmed(), id);
   }
 }
 
-class Assign extends Stmt {
+export class Assign extends Stmt {
   constructor(sourceLoc, id, /*Expr**/ targets, /*Expr*/ value) {
     super(sourceLoc, id);
     // verify that each target is a target
@@ -562,7 +564,7 @@ class Assign extends Stmt {
   }
 }
 
-class AnnAssign extends Stmt {
+export class AnnAssign extends Stmt {
   constructor(sourceLoc, id, target, op, value) {
     super(sourceLoc, id);
     this.target = target;
@@ -575,7 +577,7 @@ class AnnAssign extends Stmt {
   }
 }
 
-class AugAssign extends Stmt {
+export class AugAssign extends Stmt {
   constructor(sourceLoc, id, target, op, value) {
     super(sourceLoc, id);
     this.target = target;
@@ -592,7 +594,7 @@ class AugAssign extends Stmt {
   }
 }
 
-class Raise extends Stmt {
+export class Raise extends Stmt {
   constructor(sourceLoc, id, exc, cause) {
     super(sourceLoc, id);
     this.exc = exc;
@@ -604,7 +606,7 @@ class Raise extends Stmt {
   }
 }
 
-class Assert extends Stmt {
+export class Assert extends Stmt {
   constructor(sourceLoc, id, test, msg) {
     super(sourceLoc, id);
     this.test = test;
@@ -616,7 +618,7 @@ class Assert extends Stmt {
   }
 }
 
-class Delete extends Stmt {
+export class Delete extends Stmt {
   constructor(sourceLoc, id, targets) {
     super(sourceLoc, id);
     this.targets = targets;
@@ -627,7 +629,7 @@ class Delete extends Stmt {
   }
 }
 
-class Pass extends Stmt {
+export class Pass extends Stmt {
   get children() {
     return [];
   }
@@ -637,7 +639,7 @@ class Pass extends Stmt {
   }
 }
 
-class ExprStmt extends Stmt {
+export class ExprStmt extends Stmt {
   constructor(sourceLoc, id, expr) {
     super(sourceLoc, id);
     this.expr = expr;
@@ -655,7 +657,7 @@ class ExprStmt extends Stmt {
 // Imports
 // ------
 
-class Import extends Stmt {
+export class Import extends Stmt {
   constructor(sourceLoc, id, names) {
     super(sourceLoc, id);
     this.names = names;
@@ -666,7 +668,7 @@ class Import extends Stmt {
   }
 }
 
-class ImportFrom extends Stmt {
+export class ImportFrom extends Stmt {
   constructor(sourceLoc, id, module, names, level) {
     super(sourceLoc, id);
     this.module = module;
@@ -684,7 +686,7 @@ class ImportFrom extends Stmt {
   }
 }
 
-class Alias extends AST {
+export class Alias extends AST {
   constructor(sourceLoc, id, name, asName) {
     super(sourceLoc, id);
     this.name = name;
@@ -707,7 +709,7 @@ class Alias extends AST {
 // Control Flow
 // ---------
 
-class If extends Stmt {
+export class If extends Stmt {
   constructor(sourceLoc, id, tests, bodies, orelse) {
     super(sourceLoc, id);
     this.tests = tests;
@@ -742,7 +744,7 @@ class If extends Stmt {
   }
 }
 
-class For extends Stmt {
+export class For extends Stmt {
   constructor(sourceLoc, id, /*Expr*/ target, /*Expr*/ iter, /*Stmt**/ body, /*Stmt**/ orelse) {
     super(sourceLoc, id);
     this.target = target;
@@ -767,7 +769,7 @@ class For extends Stmt {
   }
 }
 
-class While extends Stmt {
+export class While extends Stmt {
   constructor(sourceLoc, id, test, body, orelse) {
     super(sourceLoc, id);
     this.test = test;
@@ -793,7 +795,7 @@ class While extends Stmt {
   }
 }
 
-class Break extends Stmt {
+export class Break extends Stmt {
   get children() {
     return [];
   }
@@ -803,7 +805,7 @@ class Break extends Stmt {
   }
 }
 
-class Continue extends Stmt {
+export class Continue extends Stmt {
   get children() {
     return [];
   }
@@ -813,7 +815,7 @@ class Continue extends Stmt {
   }
 }
 
-class Try extends Stmt {
+export class Try extends Stmt {
   constructor(sourceLoc, id, body, handlers, orelse, finalbody) {
     super(sourceLoc, id);
     this.body = body;
@@ -827,7 +829,7 @@ class Try extends Stmt {
   }
 }
 
-class ExceptHandler extends AST {
+export class ExceptHandler extends AST {
   constructor(sourceLoc, id, type, name, body) {
     super(sourceLoc, id);
     this.type = type;
@@ -840,7 +842,7 @@ class ExceptHandler extends AST {
   }
 }
 
-class With extends Stmt {
+export class With extends Stmt {
   constructor(sourceLoc, id, items, body) {
     super(sourceLoc, id);
     this.items = items;
@@ -852,7 +854,7 @@ class With extends Stmt {
   }
 }
 
-class WithItem extends AST {
+export class WithItem extends AST {
   constructor(sourceLoc, id, contextExpr, optionalVars) {
     super(sourceLoc, id);
     this.contextExpr = contextExpr;
@@ -867,7 +869,7 @@ class WithItem extends AST {
 // Function and Class Definitions
 // ----------------------
 
-class FunctionDef extends Stmt {
+export class FunctionDef extends Stmt {
   constructor(sourceLoc, id, name, args, body, decoratorList, returns) {
     super(sourceLoc, id);
     this.name = name;
@@ -905,7 +907,7 @@ class FunctionDef extends Stmt {
   }
 }
 
-class Lambda extends Expr {
+export class Lambda extends Expr {
   constructor(sourceLoc, id, args, body) {
     super(sourceLoc, id);
     this.args = args;
@@ -921,7 +923,7 @@ class Lambda extends Expr {
   }
 }
 
-class Arguments extends AST {
+export class Arguments extends AST {
   constructor(sourceLoc, id, args, vararg, kwonlyargs, kwarg, defaults, kwDefaults) {
     super(sourceLoc, id);
     
@@ -973,7 +975,7 @@ class Arguments extends AST {
   }
 }
 
-class Arg extends AST {
+export class Arg extends AST {
   constructor(sourceLoc, id, arg, annotation) {
     super(sourceLoc, id);
     this.arg = arg;
@@ -993,7 +995,7 @@ class Arg extends AST {
   }
 }
 
-class Return extends Stmt {
+export class Return extends Stmt {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -1008,7 +1010,7 @@ class Return extends Stmt {
   }
 }
 
-class Yield extends Expr {
+export class Yield extends Expr {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -1019,7 +1021,7 @@ class Yield extends Expr {
   }
 }
 
-class YieldFrom extends Expr {
+export class YieldFrom extends Expr {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -1030,7 +1032,7 @@ class YieldFrom extends Expr {
   }
 }
 
-class Global extends Stmt {
+export class Global extends Stmt {
   constructor(sourceLoc, id, names) {
     super(sourceLoc, id);
     this.names = names;
@@ -1041,7 +1043,7 @@ class Global extends Stmt {
   }
 }
 
-class Nonlocal extends Stmt {
+export class Nonlocal extends Stmt {
   constructor(sourceLoc, id, names) {
     super(sourceLoc, id);
     this.names = names;
@@ -1052,7 +1054,7 @@ class Nonlocal extends Stmt {
   }
 }
 
-class ClassDef extends Stmt {
+export class ClassDef extends Stmt {
   constructor(sourceLoc, id, name, bases, keywords, body, decoratorList) {
     super(sourceLoc, id);
     this.name = name;
@@ -1090,7 +1092,7 @@ class ClassDef extends Stmt {
 // Async and Await
 // ------------
 
-class AsyncFunctionDef extends Stmt {
+export class AsyncFunctionDef extends Stmt {
   constructor(sourceLoc, id, name, args, body, decoratorList, returns) {
     super(sourceLoc, id);
     this.name = name;
@@ -1109,7 +1111,7 @@ class AsyncFunctionDef extends Stmt {
   }
 }
 
-class Await extends Expr {
+export class Await extends Expr {
   constructor(sourceLoc, id, value) {
     super(sourceLoc, id);
     this.value = value;
@@ -1120,7 +1122,7 @@ class Await extends Expr {
   }
 }
 
-class AsyncFor extends Stmt {
+export class AsyncFor extends Stmt {
   constructor(sourceLoc, id, target, iter, body, orelse) {
     super(sourceLoc, id);
     this.target = target;
@@ -1134,7 +1136,7 @@ class AsyncFor extends Stmt {
   }
 }
 
-class AsyncWith extends Stmt {
+export class AsyncWith extends Stmt {
   constructor(sourceLoc, id, items, body) {
     super(sourceLoc, id);
     this.items = items;

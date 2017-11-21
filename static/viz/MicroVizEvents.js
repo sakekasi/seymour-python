@@ -1,6 +1,8 @@
-"use strict";
+import CheckedEmitter from "checked-emitter";
 
-class MicroVizEvents extends CheckedEmitter {
+import {VarDeclEvent, VarAssignmentEvent} from "./events";
+
+export default class MicroVizEvents extends CheckedEmitter {
   constructor(programOrSendEvent, isImplementation, sourceLoc) {
     super();
     this.registerEvent('addEventGroup', 'eventGroup');
@@ -82,7 +84,7 @@ class AbstractEventGroup extends CheckedEmitter {
   }
 }
 
-class LocalEventGroup extends AbstractEventGroup {
+export class LocalEventGroup extends AbstractEventGroup {
   constructor(...events) {
     super(events);
   }
@@ -93,7 +95,7 @@ class LocalEventGroup extends AbstractEventGroup {
   }
 }
 
-class RemoteEventGroup extends AbstractEventGroup {
+export class RemoteEventGroup extends AbstractEventGroup {
   constructor(...events) {
     super(events);
     this.registerEvent('removeEvent', 'event');

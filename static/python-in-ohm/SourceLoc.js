@@ -1,4 +1,7 @@
-class SourceLoc {
+import {dict, str} from "./parser/easyAst";
+import {range, trimRight} from "./utils";
+
+export default class SourceLoc {
   constructor(startIdx, endIdx) {
     this.startIdx = startIdx;
     this.endIdx = endIdx;

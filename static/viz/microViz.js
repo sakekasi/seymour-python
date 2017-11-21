@@ -1,7 +1,13 @@
-"use strict";
+import CheckedEmitter from "checked-emitter";
+import CodeMirror from "codemirror";
+import "codemirror/mode/python/python";
+
+import {d, range, unique, flatten} from "../lib";
+import {default as MicroVizEvents, LocalEventGroup, RemoteEventGroup} from "./MicroVizEvents";
+
 
 // toplevel class. persists across focuses. manages codemirror
-class MicroViz extends CheckedEmitter {
+export default class MicroViz extends CheckedEmitter {
   constructor(container, enableMicroViz) {
     super();
     this.registerEvent('click', 'DOMEvent', 'event', 'eventView');

@@ -1,4 +1,6 @@
-function range(from, to) {
+import $ from "jquery";
+
+export function range(from, to) {
   const ans = [];
   for (let x = from; x <= to; x++) {
     ans.push(x);
@@ -6,7 +8,7 @@ function range(from, to) {
   return ans;
 }
 
-function d(elementType, attributes, ...children) {
+export function d(elementType, attributes, ...children) {
   const node = document.createElement(elementType);
   if (attributes == null && children.length === 0) {
     return node;
@@ -19,7 +21,7 @@ function d(elementType, attributes, ...children) {
   return node;
 }
 
-function spaces(n) {
+export function spaces(n) {
   let str = '';
   while (n-- > 0) {
     str += ' ';
@@ -27,15 +29,15 @@ function spaces(n) {
   return str;
 }
 
-function flatten(arrs) {
+export function flatten(arrs) {
   return [].concat.apply([], arrs);
 }
 
-function unique(arr) {
+export function unique(arr) {
   return Array.from(new Set(arr));
 }
 
-function getParameterByName(name, url) {
+export function getParameterByName(name, url) {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
   var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
@@ -45,6 +47,6 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function fetchGist(id) {
+export function fetchGist(id) {
   return $.ajax(`https://api.github.com/gists/${id}`);
 }

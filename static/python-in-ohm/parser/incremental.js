@@ -1,4 +1,15 @@
-class IncrementalInstrumenter {
+import pythonGrammar from "./grammar";
+import semantics from "./semantics";
+import "./toAST";
+
+import Preprocessor from "../lexer/index";
+import SourceLoc from "../SourceLoc";
+import {ParseError} from "../utils";
+
+import "./instrumented";
+import {InstrumenterState} from "./index";
+
+export default class IncrementalInstrumenter {
   constructor() {
     this.code = null;
     this.tokenStream = null;

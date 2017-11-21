@@ -1,6 +1,9 @@
-"use strict";
+import CheckedEmitter from "checked-emitter";
 
-class MacroViz extends CheckedEmitter {
+import {ProgramEvent, SendEvent, ErrorEvent} from "./events";
+import {d} from "../lib";
+
+export default class MacroViz extends CheckedEmitter {
   constructor(container, eventRecorder = null) {
     super();
     this.registerEvent('click', 'event', 'child', 'childView');

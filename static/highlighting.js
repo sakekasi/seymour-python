@@ -1,3 +1,10 @@
+import _ from "underscore";
+import $ from "jquery";
+
+import {SendEvent} from "./viz/events";
+import getPathMatchers from "./pathmatcher";
+import {d} from "./lib";
+
 const NUM_COLORS = 8;
 const COLOR_LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -5,7 +12,7 @@ const COLOR_LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 // themselves and the other sections
 // these are rows in the act-on/acted-on matrix
 
-class Highlighting {
+export default class Highlighting {
   constructor(globalState, enableHighlighting) {
     this.globalState = globalState;
     this.enableHighlighting = enableHighlighting;
@@ -82,7 +89,7 @@ class Highlighting {
     }
 
     this.macroViz.addListener('click', (__, event, _) => {
-      if (event.activationEnv.sourceLoc !== null) { // !event.isInlineBlockCall() && 
+      if (event.activationEnv.sourceLoc !== null && event.selector !== 'enterNewScope') { // !event.isInlineBlockCall() && 
         this.focusLexicalStack(event);
       }
     });
@@ -110,7 +117,9 @@ class Highlighting {
   registerListenersMicroViz() {
     this.microViz.addListener('click', (DOMEvent, event, view) => {
       if (DOMEvent.getModifierState('Meta') &&
-          event instanceof SendEvent &&
+          event instanceof SendEvent && 
+          event.activationEnv.sourceLoc !== null && 
+          event.selector !== 'enterNewScope' &&
           !view.isImplementation) {
         this.codeClearDef();
         this.codeClearRef();

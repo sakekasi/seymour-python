@@ -1,3 +1,18 @@
+import semantics from "./semantics";
+import "./sourceLoc";
+import "./id";
+
+import {
+  Program, Assign, AugAssign, Pass, Delete, NameConstant, ExprStmt,
+  Break, Continue, ImportFrom, Alias, If, While, For,
+  FunctionDef, ClassDef, Arguments, Arg, Lambda, BoolOp, 
+  UnaryOp, Compare, Tuple, Starred, BinOp, Attribute,
+  Subscript, Call, ListComp, List, Dict, GeneratorExp,
+  Ellipsis, ExtSlice, Index, Slice, Keyword, DictComp,
+  Str, Bytes, Name, Num, Return, Comprehension, Expr
+} from "./ast";
+import {flatten} from "../../lib";
+
 semantics.addOperation('toAST(sourceMap, idContext)', {
   Program(newlinesAndStmts, _) {
     const sourceMap = this.args.sourceMap;
@@ -538,7 +553,7 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
     }
   }, 
 
-  Atom_list(_obracket, starredListOrCompCst, __) {
+  Atom_list(_obrace, starredListOrCompCst, __) {
     const sourceMap = this.args.sourceMap;
     const idContext = this.args.idContext;
     const starredListOrComp = starredListOrCompCst.numChildren === 1 ?
@@ -552,19 +567,7 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
       }
   },
 
-  Atom_list(_obrace, starredListOrCompCst, __) {
-    const sourceMap = this.args.sourceMap;
-    const idContext = this.args.idContext;
-    const starredListOrComp = starredListOrCompCst.numChildren === 1 ?
-      starredListOrCompCst.toAST(sourceMap, idContext)[0] : [];
-    
-    if (starredListOrComp.type && starredListOrComp.type === 'comprehension') {
-      return new SetComp(this.sourceLoc(sourceMap), _obrace.id(idContext), 
-        starredListOrComp.elt, starredListOrComp.generators);
-    } else {
-      return new List(this.sourceLoc(sourceMap), _obrace.id(idContext), starredListOrComp);
-    }
-  },
+ // TODO: Atom_set
 
   Atom_dict(_obrace, optDictCompOrKeyDatumList, _) {
     const sourceMap = this.args.sourceMap;

@@ -1,6 +1,10 @@
-"use strict";
+import MicroVizEvents from "./MicroVizEvents";
+import {
+  VarAssignmentEvent, SendEvent, ReturnEvent,
+  VarDeclEvent, ShowEvent
+} from "./events";
 
-class Env {
+export default class Env {
   constructor(sourceLoc, parentEnv, callerEnv, programOrSendEvent) {
     this.id = Env.nextEnvId++;
     this.sourceLoc = sourceLoc;
@@ -87,7 +91,7 @@ class Env {
 
 Env.nextEnvId = 0;
 
-class Scope extends Env {
+export class Scope extends Env {
   constructor(sourceLoc, parentEnv, callerEnv, programOrSendEvent) {
     super(sourceLoc, parentEnv, callerEnv, programOrSendEvent);
   }

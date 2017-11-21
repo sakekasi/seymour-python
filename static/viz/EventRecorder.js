@@ -1,6 +1,14 @@
-"use strict";
+import CheckedEmitter from "checked-emitter";
 
-class EventRecorder extends CheckedEmitter {
+import {
+  ProgramEvent, SendEvent, ShowEvent, 
+  ErrorEvent, LocalReturnEvent, NonLocalReturnEvent,
+  VarDeclEvent, VarAssignmentEvent, InstVarAssignmentEvent,
+  InstantiationEvent
+} from "./events";
+import {default as Env, Scope} from "./Env";
+
+export default class EventRecorder extends CheckedEmitter {
   constructor(newEventHandler) {
     super();
     this.registerEvent('addChild', 'child', 'parent');

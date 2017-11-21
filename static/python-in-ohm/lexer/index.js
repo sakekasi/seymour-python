@@ -1,4 +1,14 @@
-class Preprocessor {
+import Lexer from "lex";
+import _ from "underscore";
+
+import TokenStream from "./TokenStream";
+import {
+  NewLine, BlankLine, WhiteSpace, Comment, ExplicitLineJoin, EOF, IdentifierT, 
+  KeywordT, StringLiteral, BytesLiteral, IntegerLiteral, FloatingPointLiteral, 
+  Operator, Delimiter
+} from "./tokens";
+
+export default class Preprocessor {
   constructor() {
     this.lexer = new Lexer();
     this.state = new PreprocessorState();

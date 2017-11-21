@@ -1,0 +1,91 @@
+@import url("fira/fira.css");
+
+html {
+  font-size: 13px;
+  line-height: 18.2px;
+  line-height: 1.4rem;
+}
+
+body {
+  margin: 0;
+  font-family: "Fira Sans";
+  font-size: inherit;
+}
+
+#topHalf {
+  height: 50vh;
+  width: 100vw;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+  font-family: "Fira Mono";
+  -webkit-font-feature-settings: "liga" 0;
+          font-feature-settings: "liga" 0;
+}
+
+.CodeMirror {
+  font-family: inherit;
+}
+
+#microVizContainer {
+  padding: 0;
+  width: 100vw;
+  height: 100%;
+}
+
+#macroVizScroller {
+  overflow: auto;
+  height: 100%;
+}
+
+#bottomHalf {
+  height: 50vh;
+  position: relative;
+  overflow: hidden;
+}
+
+#legend {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  border: 1px solid black;
+}
+
+parseError {
+  display: block;
+  white-space: pre-wrap;
+  color: maroon;
+  background: yellow;
+  padding: 0 4px;
+  padding: 4px;
+  opacity: 1;
+  max-height: 100pt;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+      user-select: none;
+}
+
+/* errors */
+
+#errorDiv {
+  color: hsl(0, 50%, 70%);
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  background: hsl(0, 0%, 95%);
+  cursor: row-resize;
+}
+
+/*#errorDiv:empty {
+  padding: 0px !important;
+}*/
+
+/** DEMO CHANGES **/
+
+#legend {
+  display: none;
+}
+
+.macroViz macroVizNode.collapsed > label {
+    display: none;
+}

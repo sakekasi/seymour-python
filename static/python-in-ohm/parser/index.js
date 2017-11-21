@@ -1,4 +1,7 @@
-class Instrumenter {
+import semantics from "./semantics";
+import "./toAST";
+
+export default class Instrumenter {
   instrument(preprocessedCode, map) {
     console.debug(preprocessedCode);
 
@@ -13,7 +16,7 @@ class Instrumenter {
   }
 }
 
-class InstrumenterState {
+export class InstrumenterState {
   constructor() {
     this.executionOrderCounters = [];
     this.lambdas = [];

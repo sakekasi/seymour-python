@@ -1,4 +1,6 @@
-class Token {
+import {IndentationError, ParensError} from "../utils";
+
+export class Token {
   constructor(value, startIdx, endIdx) {
     this.value = value;
     this.startIdx = startIdx; // where the token starts in the original string
@@ -15,30 +17,30 @@ class Token {
   }
 }
 
-class IdentifierT extends Token {
+export class IdentifierT extends Token {
   static create(state, name) {
     return new IdentifierT(name, ...state.getRange(name)); 
   }
 }
 IdentifierT.regex = /[_a-zA-Z][_a-zA-Z0-9]*/u;
 
-class KeywordT extends Token {
+export class KeywordT extends Token {
   static create(state, kw) { 
     return new KeywordT(kw, ...state.getRange(kw));
   }
 }
 KeywordT.regex = /False|None|True|and|as|assert|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|try|while|with|yield/u;
 
-class Operator extends Token {
+export class Operator extends Token {
   static create(state, op) { 
     return new Operator(op, ...state.getRange(op));
   }
 }
 Operator.regex = /\+|-|\*\*|\*|\/\/|\/|%|@|<<|>>|&|\||\^|~|<=|>=|==|!=|<|>/u
 
-class LiteralT extends Token {}
+export class LiteralT extends Token {}
 
-class StringLiteral extends LiteralT {
+export class StringLiteral extends LiteralT {
   static create(state, value) {
     return new StringLiteral(value, ...state.getRange(value));
   }
@@ -59,7 +61,7 @@ const longString = `(${singleQuoteLongString}|${doubleQuoteLongString})`;
 
 StringLiteral.regex = new RegExp(`${prefix}?(${longString}|${shortString})`, 'u');
 
-class BytesLiteral extends LiteralT {
+export class BytesLiteral extends LiteralT {
   static create(state, value) {
     return new BytesLiteral(value, ...state.getRange(value));
   }
@@ -68,14 +70,14 @@ class BytesLiteral extends LiteralT {
 const bytesPrefix = `(b|B|br|Br|bR|BR|rb|rB|Rb|RB)`
 BytesLiteral.regex = new RegExp(`${bytesPrefix}(${longString}|${shortString})`);
 
-class IntegerLiteral extends LiteralT {
+export class IntegerLiteral extends LiteralT {
   static create(state, value) {
     return new IntegerLiteral(value, ...state.getRange(value));
   }
 }
 IntegerLiteral.regex = /[1-9](_?[0-9])*|0(b|B)(_?[01])+|0(o|O)(_?[0-7])+|0(x|X)(_?[0-9a-fA-F])+|0+(_?0)*/u
 
-class FloatingPointLiteral extends LiteralT {
+export class FloatingPointLiteral extends LiteralT {
   static create(state, value) {
     return new FloatingPointLiteral(value, ...state.getRange(value));
   }
@@ -83,7 +85,7 @@ class FloatingPointLiteral extends LiteralT {
 
 FloatingPointLiteral.regex = /((([0-9](_?[0-9])*)?\.([0-9](_?[0-9])*)|[0-9](_?[0-9])*\.)|[0-9](_?[0-9])*)((e|E)[+-]?[0-9](_?[0-9])*)?[jJ]?/u;
 
-class Delimiter extends Token {
+export class Delimiter extends Token {
   static create(state, value) {
     switch (value) {
     case '(':
@@ -116,7 +118,7 @@ function matches(open, close) {
 
 Delimiter.regex = /\(|\)|\[|\]|\{|\}|,|:|\.|;|=|->|\+=|-=|\*=|\/=|\/\/=|%=|@=|&=|\|=|\^=|>>=|<<=|\*\*=|@/u;
 
-class ExplicitLineJoin extends Token {
+export class ExplicitLineJoin extends Token {
   static create(state, value) {
     // const ans = new ExplicitLineJoin(value, state.origIdx, state.origIdx + 1);
     state.getRange(value);
@@ -125,7 +127,7 @@ class ExplicitLineJoin extends Token {
 }
 ExplicitLineJoin.regex = /\\[ \t\u00A0]*\n/u;
 
-class Comment extends Token {
+export class Comment extends Token {
   static create(state, value) {
     // return new Comment(value, ...state.getRange(name));
     state.getRange(value);
@@ -133,14 +135,14 @@ class Comment extends Token {
 }
 Comment.regex = /#.*(?=(\n|$))/u;
 
-class WhiteSpace extends Token {
+export class WhiteSpace extends Token {
   static create(state, value) {
     state.getRange(value);
   }
 }
 WhiteSpace.regex = /[ \t\u00A0]+/u; // TODO: update regex to include unicode
 
-class Indent extends Token {
+export class Indent extends Token {
   constructor(indentationLevel, startIdx, endIdx) {
     super(null, startIdx, endIdx);
     this.indentationLevel = indentationLevel;
@@ -149,7 +151,7 @@ class Indent extends Token {
   toString() { return '⇨'; }
 }
 
-class Dedent extends Token {
+export class Dedent extends Token {
   constructor(indentationLevel, startIdx, endIdx) {
     super(null, startIdx, endIdx);
     this.indentationLevel = indentationLevel;
@@ -158,7 +160,7 @@ class Dedent extends Token {
   toString() { return '⇦'; }
 }
 
-class NewLine extends Token {
+export class NewLine extends Token {
   constructor(startIdx, endIdx) { super('\n', startIdx, endIdx); }
 
   static create(state, _, currentIndentation) {
@@ -200,14 +202,14 @@ class NewLine extends Token {
 }
 NewLine.regex = /\n([ \t\u00A0]*)(?!\n)/u; // TODO: update to match whitespace
 
-class BlankLine extends Token {
+export class BlankLine extends Token {
   static create(state, blankLine) {
     state.getRange(blankLine);
   }
 }
 BlankLine.regex = /\n([ \t\u00A0]*)(#.*(?=(\n|$)))?(?=\n)/u;
 
-class EOF extends Token{
+export class EOF extends Token{
   static create(state) {
     let ans;
     if (!(state.lastToken instanceof NewLine)) {

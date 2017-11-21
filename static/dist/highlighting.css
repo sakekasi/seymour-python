@@ -1,0 +1,141 @@
+:root {
+  /* TODO: tune these colors */
+}
+
+temp {
+
+  color: hsl(57, 90%, 70%); /* old highlight hue */
+}
+
+/* macroViz */
+
+/* TODO: consider keeping cursorOnDecl, cursorOnSend */
+
+macroVizNode[isFocusable="true"] > label:hover {
+  background: hsl(0, 0%, 80%);
+}
+
+macroVizNode.highlight-focus > label {
+  background-color: hsl(219, 90%, 65%) !important;
+}
+
+macroVizNode.highlight-def > label {
+  background-color: hsl(219, 72%, 90%) !important;
+}
+
+macroVizNode.highlight-ref > label {
+  background-color: hsl(219, 80%, 85%) !important;
+}
+
+macroVizNode.highlight-ref-specific > label {
+  background-color: hsl(219, 80%, 75%) !important;
+}
+
+macroVizNode.highlight-ref-1 > label {
+  background-color: hsl(28, 100%, 53%) !important;
+}
+
+macroVizNode.highlight-ref-2 > label {
+  background-color: hsl(121, 57%, 40%) !important;
+}
+
+macroVizNode.highlight-ref-3 > label {
+  background-color: hsl(359, 69%, 50%) !important;
+}
+
+macroVizNode.highlight-ref-4 > label {
+  background-color: hsl(271, 39%, 57%) !important;
+}
+
+macroVizNode.highlight-ref-5 > label {
+  background-color: hsl(10, 29%, 42%) !important;
+}
+
+macroVizNode.highlight-ref-6 > label {
+  background-color: hsl(319, 66%, 68%) !important;
+}
+
+macroVizNode.highlight-ref-7 > label {
+  background-color: hsl(60, 68%, 44%) !important;
+}
+
+macroVizNode.highlight-ref-8 > label {
+  background-color: hsl(185, 77%, 46%) !important;
+}
+
+
+/* TODO: ref-colors */
+
+/* microViz */
+
+
+/* code */
+
+.CodeMirror *[class*=' highlight-'] {
+  -webkit-box-shadow: 1px 1px 0px 0px #aaa;
+          box-shadow: 1px 1px 0px 0px #aaa;
+}
+
+.CodeMirror .highlight-def {
+  background-color: hsl(219, 72%, 90%) !important;
+}
+
+.CodeMirror .highlight-ref {
+  background-color: hsl(219, 80%, 85%) !important;
+}
+
+resultWidget {
+  display: block;
+  z-index: 2000;
+  border-radius: 2pt;
+  padding: 0 4pt;
+  margin-top: 4px;
+  background: hsl(217, 96%, 95%);
+  -webkit-box-shadow: 1px 1px 4px hsl(0, 0%, 30%);
+          box-shadow: 1px 1px 4px hsl(0, 0%, 30%);
+}
+
+focusWidget {
+  display: block;
+  z-index: 2000;
+  border-radius: 2pt;
+  padding: 2pt 4pt;
+  margin-top: 0px;
+  background: hsl(217, 96%, 95%);
+  -webkit-box-shadow: 1px 1px 4px hsl(0, 0%, 30%);
+          box-shadow: 1px 1px 4px hsl(0, 0%, 30%);
+}
+
+focusWidget > call {
+  padding: 0 2pt;
+}
+
+focusWidget > call.index-0 { color: hsl(28, 100%, 53%); }
+focusWidget > call.index-1 { color: hsl(121, 57%, 40%); }
+focusWidget > call.index-2 { color: hsl(359, 69%, 50%); }
+focusWidget > call.index-3 { color: hsl(271, 39%, 57%); }
+focusWidget > call.index-4 { color: hsl(10, 29%, 42%); }
+focusWidget > call.index-5 { color: hsl(319, 66%, 68%); }
+focusWidget > call.index-6 { color: hsl(60, 68%, 44%); }
+focusWidget > call.index-7 { color: hsl(185, 77%, 46%); }
+
+
+/* other */
+
+#legend {
+  list-style-type: none;
+  padding: 10px;
+  margin: 0px;
+  margin-bottom: 10px;
+  background-color: hsl(0, 0%, 100%);
+}
+
+#legend > .definition > .swatch {
+  color: hsl(219, 72%, 90%);
+}
+#legend > .call > .swatch {
+  color: hsl(219, 80%, 85%);
+}
+#legend > .focused > .swatch {
+  color: hsl(219, 90%, 65%);
+}

@@ -1,3 +1,19 @@
+import {
+  AST, Program, Num, Str, List, Tuple, Ellipsis, NameConstant, Name,
+  UnaryOp, BinOp, BoolOp, Compare, Call, Keyword, IfExp, Attribute, Subscript,
+  Index, Slice, Assign, AugAssign, Pass, ExprStmt, ImportFrom, Import,
+  If, For, While, Break, Continue, FunctionDef, Lambda, Arguments, Return, ClassDef
+} from "./ast";
+import "./toList";
+
+import {
+  program, def, n, call, dot, id, str, list, star, sub, tuple, index, assign,
+  plus, exprS, ret, none, for_, if_, while_, dict, doubleStar, args, clsDef, 
+  and, lambda
+} from "./easyAst";
+
+import {flatten, last} from "../utils";
+
 AST.prototype.instrumented = function(state) {
   throw new Error('this method is abstract! ' + this.constructor.name);
 };
@@ -36,13 +52,9 @@ Program.prototype.instrumented = function(state) {
 // Literal
 // ------
 
-Num.prototype.instrumented = function(state) {
-  return this;
-};
+Num.prototype.instrumented = function(state) { return this; };
 
-Str.prototype.instrumented = function(state) {
-  return this;
-}
+Str.prototype.instrumented = function(state) { return this; };
 
 List.prototype.instrumented = function(state) {
   return new List(this.sourceLoc, this.id, this.elts.map(elt => elt.instrumented(state)));
@@ -59,9 +71,7 @@ NameConstant.prototype.instrumented = function(state) { return this; };
 // Variables
 // --------
 
-Name.prototype.instrumented = function(state) {
-  return this;
-};
+Name.prototype.instrumented = function(state) { return this; };
 
 // Expressions
 // ---------
@@ -122,10 +132,6 @@ Keyword.prototype.instrumented = function(state) {
 };
 
 IfExp.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  state.parents.pop();
   return new IfExp(this.sourceLoc, this.id,  
     this.test.instrumented(state), this.body.instrumented(state), this.orelse.instrumented(state));
 };
@@ -282,14 +288,13 @@ ExprStmt.prototype.instrumented = function(state) {
 // Imports
 // ------
 
-// TODO: Import
+// TODO: not sure if there's a smarter way to deal with imports. maybe with
+// assignment events?
+Import.prototype.instrumented = function(state) {
+  return this;
+};
 
 ImportFrom.prototype.instrumented = function(state) {
-  const parent = state.parent;
-  state.parents.push(this);
-
-  console.warn('TODO');
-  state.parents.pop();
   return this;
 };
 

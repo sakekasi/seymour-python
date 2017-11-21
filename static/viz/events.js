@@ -1,5 +1,3 @@
-"use strict";
-
 class Event {
   constructor(orderNum, sourceLoc, env) {
     this.orderNum = orderNum;
@@ -56,14 +54,14 @@ Event.objectIdEmojis = [
   '🍿', '🍩', '🍪', '🥛', '🍼', '☕️', '🍵', '🍶', '🍺', '🍷', '🥃', '🍸', '🍹', '⚽️', '🏀', '🏈', '⚾️',
   '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🏒', '⛸', '🏄', '🎸', '🎷', '🏠', '🏰', '😀', '😱', '👦🏻', '👨🏾'];
 
-class ProgramEvent extends Event {
+export class ProgramEvent extends Event {
   constructor(orderNum, sourceLoc) {
     super(orderNum, sourceLoc, null);
     // also: activationEnv
   }
 }
 
-class SendEvent extends Event {
+export class SendEvent extends Event {
   constructor(orderNum, sourceLoc, env, recv, selector, args, activationPathToken) {
     super(orderNum, sourceLoc, env);
     this.recv = recv;
@@ -100,7 +98,7 @@ class SendEvent extends Event {
   }
 }
 
-class VarDeclEvent extends Event {
+export class VarDeclEvent extends Event {
   constructor(orderNum, sourceLoc, env, name, value) {
     super(orderNum, sourceLoc, env);
     this.name = name;
@@ -112,7 +110,7 @@ class VarDeclEvent extends Event {
   }
 }
 
-class VarAssignmentEvent extends Event {
+export class VarAssignmentEvent extends Event {
   constructor(orderNum, sourceLoc, env, declEnv, name, value) {
     super(orderNum, sourceLoc, env);
     this.declEnv = declEnv;
@@ -130,7 +128,7 @@ class VarAssignmentEvent extends Event {
   }
 }
 
-class InstVarAssignmentEvent extends Event {
+export class InstVarAssignmentEvent extends Event {
   constructor(orderNum, sourceLoc, env, obj, name, value) {
     super(orderNum, sourceLoc, env);
     this.obj = obj;
@@ -148,7 +146,7 @@ class InstVarAssignmentEvent extends Event {
   }
 }
 
-class InstantiationEvent extends Event {
+export class InstantiationEvent extends Event {
   // TODO: how should we handle the call to init?
   constructor(orderNum, sourceLoc, env, _class, args, newInstance) {
     super(orderNum, sourceLoc, env);
@@ -162,7 +160,7 @@ class InstantiationEvent extends Event {
   }
 }
 
-class ReturnEvent extends Event {
+export class ReturnEvent extends Event {
   constructor(orderNum, sourceLoc, env, value) {
     super(orderNum, sourceLoc, env);
     this.value = value;
@@ -173,19 +171,19 @@ class ReturnEvent extends Event {
   }
 }
 
-class LocalReturnEvent extends ReturnEvent {
+export class LocalReturnEvent extends ReturnEvent {
   toMicroVizString() {
     return '→ ' + this._valueString(this.value);
   }
 }
 
-class NonLocalReturnEvent extends ReturnEvent {
+export class NonLocalReturnEvent extends ReturnEvent {
   toMicroVizString() {
     return 'return ' + this._valueString(this.value);
   }
 }
 
-class ShowEvent extends Event {
+export class ShowEvent extends Event {
   constructor(orderNum, sourceLoc, env, string) {
     super(orderNum, sourceLoc, env);
     this.string = string;
@@ -194,7 +192,7 @@ class ShowEvent extends Event {
   toMicroVizString() { return this.string; }
 }
 
-class ErrorEvent extends Event {
+export class ErrorEvent extends Event {
   constructor(sourceLoc, env, errorString) {
     super(-1, sourceLoc, env);
     this.errorString = errorString;

@@ -1,4 +1,6 @@
-class SourceMap {
+import {range} from "./utils";
+
+export default class SourceMap {
   constructor(old) {
     this.old = old;
     this.newToOrig = {};
