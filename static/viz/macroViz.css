@@ -1,3 +1,7 @@
+.macroViz macroVizNode[labeltext="enterNewScope"] > label {
+  display: none;
+}
+
 .macroViz {
   white-space: nowrap;
   padding-bottom: 5px;
