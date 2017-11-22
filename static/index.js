@@ -93,6 +93,11 @@ function fixHeights() {
   $(bottomHalf).outerHeight(usableHeight - $(topHalf).outerHeight());
 }
 
+let userIP = null;
+$.getJSON("https://api.ipify.org/?format=json", function(e) {
+  userIP = e.ip;
+  console.log('IP', userIP);
+});
 
 const gist_id = getParameterByName('id');
 console.log('GIST ID', gist_id);
