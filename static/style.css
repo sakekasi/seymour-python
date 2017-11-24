@@ -80,9 +80,31 @@ parseError {
 /** DEMO CHANGES **/
 
 #legend {
-  display: none;
+  /* display: none; */
 }
 
 .macroViz macroVizNode.collapsed > label {
     display: none;
+}
+
+#positiveFeedback > img,
+#negativeFeedback > img {
+  width: 2.5rem;
+}
+
+#positiveFeedback {
+  margin-right: 1rem;
+}
+
+#negativeFeedback {
+  margin-right: 0.5rem;
+}
+
+#message {
+  font-size: 1.4rem;
+  margin-top: 0.2rem;
+  margin-bottom:0.2rem;
+  position: relative;
+  top: -0.35rem;
+  font-family: inherit;
 }

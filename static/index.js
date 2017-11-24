@@ -1,7 +1,10 @@
 import $ from "jquery";
+import keyPolyfill from "keyboardevent-key-polyfill";
+keyPolyfill.polyfill();
 
 import Python from "./python";
 import {getParameterByName, fetchGist} from "./lib";
+import "./s3";
 
 // TODO: factor out some of this UI logic
 
@@ -92,12 +95,6 @@ function fixHeights() {
   $(topHalf).outerHeight(usableHeight * editorsShareOfUsableHeight);
   $(bottomHalf).outerHeight(usableHeight - $(topHalf).outerHeight());
 }
-
-let userIP = null;
-$.getJSON("https://api.ipify.org/?format=json", function(e) {
-  userIP = e.ip;
-  console.log('IP', userIP);
-});
 
 const gist_id = getParameterByName('id');
 console.log('GIST ID', gist_id);

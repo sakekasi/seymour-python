@@ -6,18 +6,35 @@ import os
 import gevent
 import logging
 import sys
-from flask import Flask, render_template
+from flask import Flask, render_template, request, make_response
 from flask_sockets import Sockets
+from botocore.exceptions import ClientError
 # from multiprocessing import Queue
 # from queue import Empty
 
 from CodeRunner import CodeRunner
+from s3 import uploadScreenshot
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.debug = 'DEBUG' in os.environ
 app.logger.setLevel(logging.DEBUG if app.debug else logging.INFO)
 sockets = Sockets(app)
+
+class ServerException(Exception):
+    status_code = 502
+
+    def __init__(self, message, status_code=None, payload=None):
+        Exception.__init__(self)
+        self.message = message
+        if status_code is not None:
+            self.status_code = status_code
+        self.payload = payload
+
+    def to_dict(self):
+        rv = dict(self.payload or ())
+        rv['message'] = self.message
+        return rv
 
 class CodeRunnerBackend(object):
   def __init__(self):
@@ -62,9 +79,28 @@ class CodeRunnerBackend(object):
 codeRunnerBackend = CodeRunnerBackend()
 codeRunnerBackend.start()
 
+# @app.errorhandler(ServerException)
+# def handle_invalid_usage(error):
+#   print('error', error)
+#   response = json.dumps(error.to_dict())
+#   response.status_code = error.status_code
+#   return response
+
 @app.route('/')
 def index():
   return render_template('index.html')
+
+@app.route('/createScreenshot', methods=['POST'])
+def createScreenshot():
+  app.logger.info('createScreenshot')
+  data = request.get_json()
+  if data == None:
+    raise ServerException('invalid content type. payload must be application/json.', status_code=400)
+  try:
+    uploadScreenshot(data['ip'], data['image'], data['message'], data['positive'])
+    return make_response('created screenshot')
+  except ClientError as e:
+    raise ServerException(str(e))
 
 @sockets.route('/run')
 def onConnection(websocket):

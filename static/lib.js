@@ -1,4 +1,5 @@
 import $ from "jquery";
+import html2canvas from "html2canvas";
 
 export function range(from, to) {
   const ans = [];
@@ -50,3 +51,13 @@ export function getParameterByName(name, url) {
 export function fetchGist(id) {
   return $.ajax(`https://api.github.com/gists/${id}`);
 }
+
+export function screenshot_base64(callback) {
+  html2canvas(document.body, {
+    onrendered: function(canvas) {
+      callback(canvas.toDataURL())
+    }
+  });
+}
+
+window.screenshot_base64 = screenshot_base64;

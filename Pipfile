@@ -12,6 +12,7 @@ flask = "*"
 flask-sockets = "*"
 dill = "*"
 gipc = "*"
+"boto3" = "*"
 
 
 [dev-packages]

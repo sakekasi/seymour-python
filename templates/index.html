@@ -94,12 +94,15 @@
     </div>
     <div id="errorDiv"></div>
     <div id="bottomHalf">
-      <ul id="legend">
-        <li class="focused"><span class="swatch">▣</span> focused</li>
-        <li class="definition"><span class="swatch">▣</span> definition</li>
-        <li class="call"><span class="swatch">▣</span> call</li>
-        <span id="workingIndicator">⬤</span>
-      </ul>
+      <div id="legend">
+        <a id="positiveFeedback" onclick="positiveFeedback()" href="javascript:void(0);">
+          <img src="static/img/positive.png"/> (Alt-G)
+        </a>
+        <a id="negativeFeedback" onclick="negativeFeedback()" href="javascript:void(0);">
+          <img src="static/img/negative.png"/> (Alt-B)
+        </a>
+        <input type="text" id="message"><br>
+      </div>
       <div id="macroVizScroller">
         <div id="macroVizContainer"></div>
       </div>
