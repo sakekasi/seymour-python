@@ -23,9 +23,11 @@ export function uploadScreenshot(ip, image, message, positive) {
 document.addEventListener('keydown', function (e) {
   const code = e.which || e.keyCode;
   const str = String.fromCharCode(code);
-  if (e.altKey && !e.ctrlKey && !e.metaKey && str === 'G') {
+  if ((e.altKey && e.ctrlKey && !e.metaKey && str === 'G') ||
+      (e.altKey && !e.ctrlKey && e.metaKey && str === 'G')) {
     positiveFeedback();
-  } else if (e.altKey && !e.ctrlKey && !e.metaKey && str === 'B') {
+  } else if ((e.altKey && e.ctrlKey && !e.metaKey && str === 'B') ||
+             (e.altKey && !e.ctrlKey && e.metaKey && str === 'B')) {
     negativeFeedback();
   }
 });

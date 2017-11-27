@@ -16,7 +16,7 @@ macroVizNode[isFocusable="true"] > label:hover {
 }
 
 macroVizNode.highlight-focus > label {
-  background-color: hsl(219, 90%, 65%) !important;
+  background-color: hsl(219, 90%, 70%) !important;
 }
 
 macroVizNode.highlight-def > label {
@@ -137,5 +137,5 @@ focusWidget > call.index-7 { color: hsl(185, 77%, 46%); }
   color: hsl(219, 80%, 85%);
 }
 #legend > .focused > .swatch {
-  color: hsl(219, 90%, 65%);
+  color: hsl(219, 90%, 70%);
 }

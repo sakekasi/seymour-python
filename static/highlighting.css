@@ -1,6 +1,6 @@
 :root {
   --hover-color       : hsl(0, 0%, 80%);
-  --focus-color       : hsl(219, 90%, 65%);
+  --focus-color       : hsl(219, 90%, 70%);
   /* TODO: tune these colors */
   --def-color         : hsl(219, 72%, 90%);
   --ref-color         : hsl(219, 80%, 85%);

@@ -192,7 +192,7 @@ export default class Python extends CheckedEmitter {
       this.changesTimeout = setTimeout(() => {
         this.run(this.instrumenter.code, instrumentedCode);
         this.changesTimeout = null;
-      }, 200);
+      }, 500);
     } catch (parseError) {
       if (!(parseError instanceof ParseError)) {
         console.error(parseError);
