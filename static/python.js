@@ -114,7 +114,10 @@ export default class Python extends CheckedEmitter {
     this.socket.addEventListener('message', (message) => this.onMessage(message));
     // TODO: guarantee run happens after socket is opened
     this.socket.addEventListener('open', () => this.onOpen());
-    this.socket.addEventListener('close', (event) => console.log('CLOSED', event));
+    this.socket.addEventListener('close', (event) => {
+      this.opened = false;
+      console.log('CLOSED', event)
+    });
     this.socket.addEventListener('error', (error) => console.log('ERROR', error));
 
     this.envs = {};
@@ -158,7 +161,7 @@ export default class Python extends CheckedEmitter {
       }
     });
 
-    // if (!this.opened) { debugger; }
+    
     this.envs = {};
     this.events = {};
     this.messageQueue = [];
@@ -166,6 +169,7 @@ export default class Python extends CheckedEmitter {
       clearTimeout(this.eventProcessingTimeout);
     }
     this.eventProcessingTimeout = setTimeout(()=>this.processSomeMessages(), 1000*SECONDS_PER_PERIOD);
+    if (!this.opened) { return; }
     this.socket.send(JSON.stringify({ type: 'kill' }))
     this.socket.send(JSON.stringify({
       type: 'run',
