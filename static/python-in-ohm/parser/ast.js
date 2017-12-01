@@ -643,7 +643,6 @@ export class ExprStmt extends Stmt {
   constructor(sourceLoc, id, expr) {
     super(sourceLoc, id);
     this.expr = expr;
-    if (this.expr === undefined) debugger;
   }
 
   toString(indentation = 0) {
