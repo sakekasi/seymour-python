@@ -55,8 +55,8 @@ const doubleQuoteShortString = `"${doubleQuoteShortStringChar}*"`;
 const shortString = `(${singleQuoteShortString}|${doubleQuoteShortString})`;
 
 const longStringChar = `(.|\\n)`;
-const singleQuoteLongString = `'''${longStringChar}*'''`;
-const doubleQuoteLongString = `"""${longStringChar}*"""`;
+const singleQuoteLongString = `'''((?!''')${longStringChar})*${longStringChar}'''`;
+const doubleQuoteLongString = `"""((?!""")${longStringChar})*${longStringChar}"""`;
 const longString = `(${singleQuoteLongString}|${doubleQuoteLongString})`;
 
 StringLiteral.regex = new RegExp(`${prefix}?(${longString}|${shortString})`, 'u');

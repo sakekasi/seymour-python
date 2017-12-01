@@ -15,6 +15,7 @@ import SourceLoc from "./python-in-ohm/SourceLoc";
 import EventRecorder from "./viz/EventRecorder";
 import {default as Env, Scope} from "./viz/Env";
 import {ProgramEvent} from "./viz/events";
+import {spaces} from "./lib";
 
 // Support TLS-specific URLs, when appropriate.
 if (window.location.protocol == "https:") {
@@ -198,7 +199,8 @@ export default class Python extends CheckedEmitter {
         this.changesTimeout = null;
       }, 500);
     } catch (parseError) {
-      if (!(parseError instanceof ParseError)) {
+      if (!(parseError.isParseError)) {
+        console.error(parseError.constructor.name);
         console.error(parseError);
         console.error('show this in the codemirror');
       } else {

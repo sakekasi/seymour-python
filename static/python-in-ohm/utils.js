@@ -44,10 +44,8 @@ export class ParseError extends Error {
 
     this.idx = idx;
     this.expected = expected;
-  }
-
-  get message() {
-    return `^\nExpected: ${this.expected}`;
+    this.isParseError = true;
+    this.message = `^\nExpected: ${this.expected}`
   }
 }
 

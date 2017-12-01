@@ -82,8 +82,8 @@ Python {
   StarredList = NonemptyListWithOptionalEndSep<StarredItem, ",">
 
   // TODO: not sure about this
-  StarredExpr = (StarredItem ",")* StarredItem? -- star 
-    | Expr
+  StarredExpr = (StarredItem ",")* StarredItem -- star 
+    // | Expr
 
   StarredItem = "*" OrExpr -- star
     | Expr

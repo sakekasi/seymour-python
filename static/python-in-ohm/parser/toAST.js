@@ -384,11 +384,11 @@ semantics.addOperation('toAST(sourceMap, idContext)', {
     return [op, right];
   },
 
-  StarredExpr_star(starredItemCsts, _commas, optStarredItem) {
+  StarredExpr_star(starredItemCsts, _commas, starredItem) {
     const sourceMap = this.args.sourceMap;
     const idContext = this.args.idContext;
     const starredItems = starredItemCsts.toAST(sourceMap, idContext);
-    const endStarredItem = optStarredItem.toAST(sourceMap, idContext);
+    const endStarredItem = [starredItem.toAST(sourceMap, idContext)];
     const numItems = starredItems.length + endStarredItem.length;
     
     if (numItems === 1) {
