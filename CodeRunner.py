@@ -1,5 +1,6 @@
 import gipc
 import sys
+import traceback
 # from multiprocessing import Queue, Process
 import signal
 
@@ -31,6 +32,7 @@ class CodeRunner(object):
       pass
     except Exception as e:
       if not R.raised:
+        traceback.print_exc()
         activationEnv = R.currentProgramOrSendEvent.activationEnv
         R.error(
           R.currentProgramOrSendEvent.sourceLoc if activationEnv != None else None,

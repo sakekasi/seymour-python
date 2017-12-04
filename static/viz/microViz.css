@@ -2,7 +2,7 @@
   line-height: 1.4rem;
   display: inline-block;
   min-width: 350px;
-  /* height: auto; */
+  height: auto;
   min-height: 100%;
   border-right: 1px dashed hsl(0, 0%, 80%);
 }

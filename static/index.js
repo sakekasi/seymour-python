@@ -50,6 +50,7 @@ function clearError() {
 }
 
 function displayError(message) {
+  console.error('PROGRAM ERROR:', message);
   errorDiv.innerHTML = '';
   errorDiv.innerText = message;
 }

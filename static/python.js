@@ -14,7 +14,7 @@ import SourceLoc from "./python-in-ohm/SourceLoc";
 
 import EventRecorder from "./viz/EventRecorder";
 import {default as Env, Scope} from "./viz/Env";
-import {ProgramEvent} from "./viz/events";
+import {ProgramEvent, ErrorEvent} from "./viz/events";
 import {spaces} from "./lib";
 
 // Support TLS-specific URLs, when appropriate.
@@ -82,6 +82,7 @@ export default class Python extends CheckedEmitter {
       }
     });
     this.editor.setOption('mode', 'python');
+    this.editor.setOption('viewportMargin', Infinity);
 
     if (this.macroVizContainer) {
       this.macroViz = new MacroViz(this.macroVizContainer);
@@ -309,7 +310,7 @@ export default class Python extends CheckedEmitter {
       this.globalEnv = env;
       env.programOrSendEvent.activationEnv = env;
     }
-    console.log(env);
+    console.log(env.constructor.name, env);
     return env;
   }
 
@@ -329,7 +330,7 @@ export default class Python extends CheckedEmitter {
     this.R[eventMethods[eventJSON.type]](...args);
     this.R.lastEvent.id = eventJSON.id;
     this.events[this.R.lastEvent.id] = this.R.lastEvent;
-    console.log(this.R.lastEvent);
+    console.log(this.R.lastEvent.constructor.name, this.R.lastEvent);
   }
 }
 
